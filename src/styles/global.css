@@ -1,0 +1,12 @@
+@import './fonts.css';
+
+
+html,body {
+  height: 100%;
+}
+
+body {
+  font-family: 'geometria', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
