@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 import { PATH_STUDENTS } from '../../../consts/routes'
@@ -9,6 +9,7 @@ import Button from '../../ui/Button'
 import Select from '../../ui/Select'
 import * as OP from '../../../consts/optionsValues'
 import File from '../../ui/File'
+import UploadImage from '../../ui/UploadImage'
 
 import * as SC from './styled'
 
@@ -29,7 +30,8 @@ const Form = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
+    control
   } = useForm<FormInputs>()
 
   const onSubmit = (data: FormInputs) => console.log('Отправлено: ', data)
@@ -43,7 +45,18 @@ const Form = () => {
         <SC.Header as={'h1'}>Новый студент</SC.Header>
         <SC.Form onSubmit={handleSubmit(onSubmit)}>
           <SC.Fieldset>
-            <File {...register('avatar')} id={'avatar'} setValue={setValue} />
+            <Controller
+              name="avatar"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <UploadImage
+                  id="profile-avatar"
+                  name="profile-avatar"
+                  value={value}
+                  onFileSelect={(value: string) => onChange(value)}
+                />
+              )}
+            />
           </SC.Fieldset>
           <SC.Fieldset>
             {/* <Input
