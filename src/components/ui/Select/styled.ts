@@ -91,5 +91,5 @@ export const Option = styled(Texts)`
 `
 
 export const Input = styled.input`
-  /* display: none; */
+  display: none;
 `

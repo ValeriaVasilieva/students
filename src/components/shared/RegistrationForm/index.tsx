@@ -43,10 +43,10 @@ const Form = () => {
         <SC.Header as={'h1'}>Новый студент</SC.Header>
         <SC.Form onSubmit={handleSubmit(onSubmit)}>
           <SC.Fieldset>
-            <File {...register('avatar')} id={'avatar'} setValue={setValue} />
+            <File {...register('avatar')} id={'avatar'} />
           </SC.Fieldset>
           <SC.Fieldset>
-            {/* <Input
+            <Input
               label={'ФИО'}
               id={'name'}
               placeholder={'Иванов Иван Иванович'}
@@ -68,11 +68,10 @@ const Form = () => {
             <Input
               label={'Возраст'}
               id={'age'}
-              placeholder={'0'}
               max={3}
+              type={'date'}
               {...register('age', {
-                required: 'Введите ваш возраст',
-                pattern: { value: /[0-9]/, message: 'Не бывает такого' }
+                required: 'Введите ваш возраст'
               })}
               error={errors.age}
             />
@@ -86,10 +85,10 @@ const Form = () => {
                 pattern: { value: /[0-9]{2,3}/, message: 'Введите точный рейтинг' }
               })}
               error={errors.score}
-            /> */}
+            />
           </SC.Fieldset>
           <SC.Fieldset>
-            {/* <Select
+            <Select
               label={'Специальность'}
               defaultValue={'Выбрать'}
               {...(register('prof'), { required: 'Нужно выбрать' })}
@@ -115,7 +114,7 @@ const Form = () => {
               options={OP.sex}
               id={'sex'}
               setValue={setValue}
-            /> */}
+            />
           </SC.Fieldset>
           <SC.Fieldset>
             <Button buttonText={'Создать'} />
