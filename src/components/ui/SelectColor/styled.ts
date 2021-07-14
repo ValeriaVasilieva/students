@@ -1,13 +1,14 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import { Texts } from '../../styled/Texts'
 import arrow from '../../../assets/icons/select_arrow.svg'
-import check from '../../../assets/icons/check.svg'
 
 
 type Props = {
   isOpen?: boolean
-  hasValue?: boolean
+  // какой тип хз
+  color?: any
+  blockColor?: string
 }
 
 export const Base = styled.div`
@@ -27,7 +28,7 @@ export const Label = styled(Texts)`
   }
 `
 
-export const Select = styled(Texts).attrs({ color: 'placeholder' })<Props>`
+export const Select = styled(Texts).attrs({ color: 'placeholder' })`
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   border: none;
@@ -46,8 +47,6 @@ export const Select = styled(Texts).attrs({ color: 'placeholder' })<Props>`
     box-sizing: border-box;
     border: 2px solid ${props => props.theme.colors.primary};
   }
-
-  ${({ hasValue }) => hasValue && 'color: black'};
 `
 
 export const ErrorMessage = styled(Texts).attrs({
@@ -63,29 +62,47 @@ export const Options = styled.div<Props>`
   width: 100%;
   box-sizing: border-box;
   background: #ffffff;
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
+  justify-content: space-between;
   padding: 16px 23px;
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   top: 100px;
 `
 
-export const Option = styled(Texts)`
-  line-height: 35px;
-  padding: 0 12px;
-  border-radius: inherit;
+export const Option = styled(Texts)<Props>`
+  border-radius: 50%;
   cursor: pointer;
   position: relative;
+  width: 30px;
+  height: 30px;
+  background: ${({ color }) => color};
+  transition: transform 0.2s;
+  overflow: hidden;
 
   &:hover {
-    background: rgba(73, 194, 232, 0.11);
+    transform: scale(1.2);
   }
+`
 
-  &:hover::after {
-    content: url(${check});
-    position: absolute;
-    right: 12px;
+//может и сделаю ее если время будет
+const rideAnimation = keyframes`
+  from {
+    transform: translate(0, 0);
   }
+  to{
+    transform: translate(320, 0);
+  }
+`
+
+export const OptionLgbt = styled(Option)`
+  animation: ${rideAnimation} 2s;
+`
+
+export const ColorBlock = styled.div<Props>`
+  height: 5px;
+  width: 100%;
+  background: ${({ blockColor }) => blockColor};
 `
 
 export const Input = styled.input`

@@ -6,8 +6,7 @@ import check from '../../../assets/icons/check.svg'
 
 
 type Props = {
-  isOpen?: boolean
-  hasValue?: boolean
+  isOpen: boolean
 }
 
 export const Base = styled.div`
@@ -27,7 +26,7 @@ export const Label = styled(Texts)`
   }
 `
 
-export const Select = styled(Texts).attrs({ color: 'placeholder' })<Props>`
+export const Select = styled(Texts).attrs({ color: 'placeholder' })`
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   border: none;
@@ -46,8 +45,6 @@ export const Select = styled(Texts).attrs({ color: 'placeholder' })<Props>`
     box-sizing: border-box;
     border: 2px solid ${props => props.theme.colors.primary};
   }
-
-  ${({ hasValue }) => hasValue && 'color: black'};
 `
 
 export const ErrorMessage = styled(Texts).attrs({
@@ -89,5 +86,5 @@ export const Option = styled(Texts)`
 `
 
 export const Input = styled.input`
-  display: none;
+  /* display: none; */
 `

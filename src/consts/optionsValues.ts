@@ -8,7 +8,8 @@ export const prof = [
   { id: 1, value: 'Информатика' },
   { id: 2, value: 'Банщик' },
   { id: 3, value: 'Мастер по маникюру' },
-  { id: 4, value: 'Валеркин любимец' }
+  { id: 4, value: 'Валеркин любимец' },
+  { id: 4, value: 'Боец UFC перед игрой в класк' }
 ]
 
 export const sex = [

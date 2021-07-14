@@ -1,13 +1,15 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 import { Student } from '../models/types'
-import { getStudents, removeStudent } from '../api/students'
+import { getStudents, postStudent, removeStudent } from '../api/students'
+import { FormValues } from '../components/shared/RegistrationForm'
 
 
 class StudentsCloud {
   defaultStudents: Student[] = []
   filteredStudents: Student[] = []
   sortValue = ''
+  state = { render: true }
 
   constructor() {
     makeAutoObservable(this)
@@ -34,9 +36,42 @@ class StudentsCloud {
   }
 
   async deleteStudent(id: number) {
-    // this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)
-    // this.defaultStudents = this.filteredStudents
-    await removeStudent(id)
+    try {
+      await removeStudent(id)
+
+      runInAction(() => (this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  async postNewStudent(data: FormData) {
+    await postStudent(data)
+    runInAction(async () => await this.setStudents())
+  }
+
+  getCorrectFormatForPost = (data: FormValues) => {
+    const entries = Object.entries(data).filter(entry => entry[0] !== 'avatar') as [string, string][]
+
+    const file = data.avatar[0]
+    const formData = new FormData()
+
+    formData.append('avatar', file)
+
+    entries.forEach((entry) => {
+      if (entry[0] === 'prof') {
+        formData.append('specialty', entry[1])
+      }
+      if (entry[0] === 'score') {
+        formData.append('rating', entry[1])
+      }
+      if (entry[0] === 'birth') {
+        formData.append('birthday', entry[1])
+      }
+      formData.append(...entry)
+    })
+
+    this.postNewStudent(formData)
   }
 
   getFilterStudents(value: string) {
@@ -45,8 +80,6 @@ class StudentsCloud {
 
   getSortedStudents(value: string, text: string) {
     this.sortValue = text
-    console.log(this.sortValue)
-    
 
     switch (value) {
       case 'name':

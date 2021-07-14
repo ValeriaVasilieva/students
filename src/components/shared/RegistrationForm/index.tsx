@@ -1,38 +1,52 @@
-import React from 'react'
-import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import React, { FC } from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { Link, useHistory } from 'react-router-dom'
 
 import { PATH_STUDENTS } from '../../../consts/routes'
 import { Container } from '../../styled/Container'
 import Input from '../../ui/Input'
 import Button from '../../ui/Button'
 import Select from '../../ui/Select'
+import Select2 from '../../ui/Select2'
 import * as OP from '../../../consts/optionsValues'
 import File from '../../ui/File'
+import SelectColor from '../../ui/SelectColor'
+import { colors } from '../../../consts/colors'
 
 import * as SC from './styled'
 
 
-export type FormInputs = {
-  userName: string
-  Email: string
-  age: string
+type Props = {
+  createStudent(dataForm: FormValues): void
+}
+
+export type FormValues = {
+  name: string
+  email: string
+  birth: string
   score: string
   sex: string
   prof: string
   group: string
-  avatar: string
+  avatar: FileList
+  color: string
 }
 
-const Form = () => {
+const RegistrationForm: FC<Props> = ({ createStudent }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue
-  } = useForm<FormInputs>()
+    setValue,
+    control
+  } = useForm<FormValues>({ mode: 'onBlur' })
 
-  const onSubmit = (data: FormInputs) => console.log('Отправлено: ', data)
+  const history = useHistory()
+
+  const onSubmit = (data: FormValues) => {
+    createStudent(data)
+    history.push(PATH_STUDENTS)
+  }
 
   return (
     <SC.Base>
@@ -43,79 +57,92 @@ const Form = () => {
         <SC.Header as={'h1'}>Новый студент</SC.Header>
         <SC.Form onSubmit={handleSubmit(onSubmit)}>
           <SC.Fieldset>
-            <File {...register('avatar')} id={'avatar'} setValue={setValue} />
+            <File label="Сменить аватар" {...register('avatar')} />
           </SC.Fieldset>
           <SC.Fieldset>
-            {/* <Input
-              label={'ФИО'}
+            <Input
+              label={'Имя'}
               id={'name'}
               placeholder={'Иванов Иван Иванович'}
-              {...register('userName', {
-                required: 'Введите ваше имя'
+              {...register('name', {
+                required: "Ooops, let's try again",
+                maxLength: { value: 35, message: 'Gimmi, gimmi more...letters...no' },
+                pattern: { value: /^[A-Za-zА-Яа-яЁё]/, message: 'Just business, just letters' }
               })}
-              error={errors.userName}
+              error={errors.name?.message}
             />
             <Input
               label={'Email'}
-              id={'Email'}
+              id={'email'}
               placeholder={'ivanov@gmail.com'}
-              {...register('Email', {
-                required: 'Введите ваш Email',
-                pattern: { value: /[A-Za-z]+@[a-z]+.[a-z]{2,}/, message: 'Это не Email' }
+              {...register('email', {
+                required: "Ooops, let's try again",
+                maxLength: { value: 35, message: 'Gimmi, gimmi more...letters...no' },
+                pattern: {
+                  value: /@/,
+                  message: 'Wrong format of Email'
+                }
               })}
-              error={errors.Email}
-            />
-            <Input
-              label={'Возраст'}
-              id={'age'}
-              placeholder={'0'}
-              max={3}
-              {...register('age', {
-                required: 'Введите ваш возраст',
-                pattern: { value: /[0-9]/, message: 'Не бывает такого' }
-              })}
-              error={errors.age}
+              error={errors.email?.message}
             />
             <Input
               label={'Рейтинг'}
               id={'score'}
               placeholder={'0'}
-              max={3}
               {...register('score', {
-                required: 'Введите ваш рейтинг',
-                pattern: { value: /[0-9]{2,3}/, message: 'Введите точный рейтинг' }
+                required: "Ooops, let's try again",
+                maxLength: { value: 3, message: 'Are you kidding me?' },
+                pattern: { value: /\d{1,5}/, message: 'Just business, just numbers' }
               })}
-              error={errors.score}
-            /> */}
+              error={errors.score?.message}
+            />
+            <Input
+              label={'Дата рождения'}
+              id={'birth'}
+              type={'date'}
+              {...register('birth', {
+                required: "Ooops, let's try again"
+              })}
+              error={errors.birth?.message}
+            />
           </SC.Fieldset>
           <SC.Fieldset>
-            {/* <Select
-              label={'Специальность'}
-              defaultValue={'Выбрать'}
-              {...(register('prof'), { required: 'Нужно выбрать' })}
-              error={errors.prof}
-              options={OP.prof}
-              id={'prof'}
+            <Select
+              label={'Пол'}
+              id={'sex'}
+              placeholder={'Выбрать'}
+              options={OP.sex}
               setValue={setValue}
+              {...register('sex', { required: 'Your choice is very important for us' })}
+              error={errors.sex?.message}
+            />
+            <Select
+              label={'Специальность'}
+              id={'prof'}
+              placeholder={'Выбрать'}
+              options={OP.prof}
+              setValue={setValue}
+              {...register('prof', { required: 'Your choice is very important for us' })}
+              error={errors.prof?.message}
             />
             <Select
               label={'Группа'}
-              defaultValue={'Выбрать'}
-              {...(register('group'), { required: 'Нужно выбрать' })}
-              error={errors.group}
-              options={OP.group}
               id={'group'}
+              placeholder={'Выбрать'}
+              options={OP.group}
+              setValue={setValue}
+              {...register('group', { required: 'Your choice is very important for us' })}
+              error={errors.group?.message}
+            />
+            <SelectColor
+              label={'Любимый цвет'}
+              options={colors}
+              placeholder={'Выбрать'}
+              id={'color'}
+              {...register('color', { required: 'Your choice is very important for us' })}
+              error={errors.color?.message}
               setValue={setValue}
             />
-            <Select
-              label={'Пол'}
-              defaultValue={'Выбрать'}
-              {...(register('sex'), { required: 'Нужно выбрать' })}
-              error={errors.sex}
-              options={OP.sex}
-              id={'sex'}
-              setValue={setValue}
-            /> */}
           </SC.Fieldset>
           <SC.Fieldset>
             <Button buttonText={'Создать'} />
@@ -126,4 +153,29 @@ const Form = () => {
   )
 }
 
-export default Form
+export default RegistrationForm
+
+{
+  /* {
+              <Controller
+                rules={{
+                  required: {
+                    value: true,
+                    message: 'Это обязательное поле'
+                  }
+                }}
+                control={control}
+                defaultValue=""
+                name="sex"
+                render={({ field, fieldState: { error } }) => (
+                  <Select2
+                    options={OP.sex}
+                    placeholder={'Выбрать'}
+                    label={'Пол'}
+                    field={field}
+                    error={error?.message}
+                  />
+                )}
+              />
+            } */
+}

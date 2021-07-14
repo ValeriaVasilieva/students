@@ -20,7 +20,7 @@ const Students = observer(() => {
         onChangeSort={(value, text) => cloud.getSortedStudents(value, text)}
         sortValue={cloud.sortValue}
       />
-      <StudentsList students={cloud.filteredStudents} onClickDeleteStudent={e => cloud.deleteStudent(e)}/>
+      <StudentsList students={cloud.filteredStudents} onClickDeleteStudent={e => cloud.deleteStudent(e)} />
     </>
   )
 })

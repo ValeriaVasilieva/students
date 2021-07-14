@@ -4,7 +4,7 @@ import { Texts, Headings } from '../../styled/Texts'
 
 
 type Props = {
-  visibility: string
+  visible?: string
 }
 
 export const Base = styled.div`
@@ -61,5 +61,5 @@ export const Avatar = styled.img<Props>`
   outline: none;
   border-radius: 50%;
   object-fit: cover;
-  ${({ visibility }) => !visibility && 'display: none'};
+  ${({ visible }) => !visible && 'display: none'};
 `

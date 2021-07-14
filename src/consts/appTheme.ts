@@ -1,4 +1,4 @@
-import { DefaultTheme } from "styled-components"
+import { DefaultTheme } from 'styled-components'
 
 
 export const defaultTheme: DefaultTheme = {
@@ -20,6 +20,7 @@ export const defaultTheme: DefaultTheme = {
   backgroundColor: '#FFFFFF',
   media: {
     phone: '(max-width: 425px)',
-    tablet: '(max-width: 768px) and (min-width: 425px)'
+    tablet: '(max-width: 768px) and (min-width: 425px)',
+    studentList: '(max-width: 1000px)'
   }
 }

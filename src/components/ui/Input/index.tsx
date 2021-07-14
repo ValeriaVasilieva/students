@@ -1,30 +1,33 @@
-import React, { forwardRef, ForwardRefRenderFunction } from 'react'
-import { FieldError } from 'react-hook-form'
+import React, { forwardRef } from 'react'
+import { FieldError, UseFormRegister } from 'react-hook-form'
+
+import { FormValues } from '../../shared/RegistrationForm'
 
 import * as SC from './styled'
 
 
-type InputProps = {
-  label?: string
-  placeholder?: string
-  error?: FieldError
-  type?: string
+type Props = {
+  label: string
   id: string
-  max?: number
+  placeholder?: string
+  type?: string
+  error?: string
 }
 
-const Input: ForwardRefRenderFunction<HTMLInputElement, InputProps> = (props, ref) => {
-  const { label, type, error, id, max, ...register } = props
+const Input = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<FormValues>>>((props, ref) => {
+  const { label, id, placeholder, type, error, ...inputProps } = props
 
   return (
     <SC.Base>
       <SC.Label as={'label'} htmlFor={id}>
         {label}
       </SC.Label>
-      <SC.Input as={'input'} ref={ref} id={id} type={type || 'text'} {...register} maxLength={max || 35} />
-      <SC.ErrorMessage as="span">{error?.message}</SC.ErrorMessage>
+      <SC.Input as={'input'} placeholder={placeholder} type={type || 'text'} {...inputProps} />
+      <SC.ErrorMessage as="span">{error}</SC.ErrorMessage>
     </SC.Base>
   )
-}
+})
 
-export default forwardRef(Input)
+Input.displayName = 'Input'
+
+export default Input

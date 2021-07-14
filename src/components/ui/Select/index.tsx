@@ -1,57 +1,66 @@
-import React, { forwardRef, ForwardRefRenderFunction, useState } from 'react'
-import { FieldError } from 'react-hook-form'
+import React, { forwardRef, useEffect, useState } from 'react'
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 
+import { FormValues } from '../../shared/RegistrationForm'
 import { optionProps } from '../../../consts/optionsValues'
 
 import * as SC from './styled'
 
 
-type SelectProps = {
-  defaultValue: string
+type Props = {
   label: string
-  error?: FieldError
-  options: Array<optionProps>
-  id: string
-  setValue(id: string, value: string): void
+  options: optionProps[]
+  placeholder: string
+  id: 'prof' | 'sex' | 'group'
+  setValue: UseFormSetValue<FormValues>
+  error?: string
 }
 
-const Select: ForwardRefRenderFunction<HTMLInputElement, SelectProps> = (props, ref) => {
-  const { defaultValue, label, error, options, setValue, id, ...register } = props
+const Select = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<FormValues>>>((props, ref) => {
+  const { label, options, placeholder, setValue, id, error } = props
 
   const [isOpened, setIsOpened] = useState<boolean>(false)
-  const [selectValue, setMyValue] = useState<string>('')
+  const [selectedValue, setSelectedValue] = useState<string>('')
 
-  function onClickOpen() {
+  const onClickOpen = () => {
     setIsOpened(!isOpened)
   }
 
-  function checkOpened() {
+  const getSelectedValue = (value: string) => {
+    setSelectedValue(value)
     setIsOpened(false)
   }
 
-  document.addEventListener('click', checkOpened, true)
-
-  function getValue(value: string) {
-    setMyValue(value)
-    setValue(id, value)
+  const handleClickAway = () => {
+    setIsOpened(false)
   }
 
-  return (
-    <SC.Base>
-      <SC.Label>{label}</SC.Label>
-      <SC.Select onClick={onClickOpen} ref={ref} {...register}>
-        {selectValue || defaultValue}
-      </SC.Select>
-      <SC.Options isOpen={isOpened} onClick={(e: any) => getValue(e.target.dataset.value)}>
-        {options.map(option => (
-          <SC.Option key={option.id} data-value={option.value}>
-            {option.value}
-          </SC.Option>
-        ))}
-      </SC.Options>
-      <SC.ErrorMessage as={'span'}>{error?.message}</SC.ErrorMessage>
-    </SC.Base>
-  )
-}
+  useEffect(() => {
+    if (selectedValue !== '') {
+      setValue(id, selectedValue || '', { shouldValidate: true })
+    }
+  }, [selectedValue])
 
-export default forwardRef(Select)
+  return (
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <SC.Base>
+        <SC.Label>{label}</SC.Label>
+        <SC.Select tabIndex={0} onClick={onClickOpen} hasValue={!!selectedValue}>
+          {selectedValue || placeholder}
+        </SC.Select>
+        <SC.Options isOpen={isOpened}>
+          {options.map(option => (
+            <SC.Option key={option.value} onClick={() => getSelectedValue(option.value)}>
+              {option.value}
+            </SC.Option>
+          ))}
+        </SC.Options>
+        <SC.Input ref={ref} />
+        <SC.ErrorMessage as={'span'}>{error}</SC.ErrorMessage>
+      </SC.Base>
+    </ClickAwayListener>
+  )
+})
+Select.displayName = 'Select'
+export default Select

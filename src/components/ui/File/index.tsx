@@ -1,49 +1,66 @@
-import React, { useState, forwardRef, ForwardRefRenderFunction } from 'react'
+import React, { forwardRef, useState } from 'react'
+import { UseFormRegister } from 'react-hook-form'
+
+import { FormValues } from '../../shared/RegistrationForm'
 
 import * as SC from './styled'
 
 
 type Props = {
-  id: string
-  setValue(avatar: string, value: any): void
+  label: string
 }
 
-const File: ForwardRefRenderFunction<HTMLInputElement, Props> = (props, ref) => {
-  const [valueInput, setValueInput] = useState<string>('')
-  const [file, setFile] = useState('')
-  const { setValue, ...register } = props
+const File = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<FormValues>>>((props, ref) => {
+  const { onChange, onBlur, name, label } = props
 
-  function onChange(e: any) {
+  const [avatarSrc, setAvatarSrc] = useState('')
+
+  const handleChange = (e: any) => {
     const file = e.currentTarget.files[0]
-    setFile(file) 
+    console.log(file)
+
     const reader = new FileReader()
-    reader.readAsDataURL(file)
+
+    const a = reader.readAsDataURL(file)
 
     reader.onload = function () {
-      const value = reader.result?.toString()
-      setValueInput(value || '')
-      console.log(valueInput)
-    }
+      if (reader.result !== null) {
+        const binary = reader.result.toString()
+        console.log(typeof reader.result.toString())
 
+        setAvatarSrc(binary)
+      }
+    }
     reader.onerror = function () {
-      alert(reader.error)
+      return alert(reader.error)
     }
 
-    setValue('avatar', file) //это я сейчас балуюсь
+    console.log(a)
   }
 
   return (
     <SC.Base>
       <SC.AvatarBox>
         ФИ
-        <SC.Avatar src={valueInput} visibility={valueInput} />
+        <SC.Avatar src={avatarSrc} visible={avatarSrc} />
       </SC.AvatarBox>
       <SC.Label as={'label'} htmlFor="avatar">
-        Сменить аватар
+        {label}
       </SC.Label>
-      <SC.InputFile ref={ref} {...register} onChange={onChange}/>
+      <SC.InputFile
+        id="avatar"
+        ref={ref}
+        onChange={(e) => {
+          onChange(e)
+          handleChange(e)
+        }}
+        name={name}
+        onBlur={onBlur}
+      />
     </SC.Base>
   )
-}
+})
 
-export default forwardRef(File)
+File.displayName = 'File'
+
+export default File
