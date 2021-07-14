@@ -49,7 +49,7 @@ export const Avatar = styled.div<Props>`
 export const AvatarWithoutPic = styled.div`
   width: 100%;
   text-align: center;
-  font-size: 20px
+  font-size: 20px;
 `
 
 export const Color = styled.div<Props>`
