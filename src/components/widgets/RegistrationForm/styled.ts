@@ -5,6 +5,7 @@ import { H1 } from '../../styled/Texts'
 
 export const Base = styled.div`
   margin-top: 21px;
+  margin-bottom: 20px;
 `
 
 export const Heading = styled(H1)`

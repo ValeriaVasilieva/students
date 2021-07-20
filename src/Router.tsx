@@ -10,13 +10,13 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={PATH_ROOT}>
-          <AddStudent />
-        </Route>
-        <Route path={PATH_STUDENTS}>
+        <Route exact path={PATH_STUDENTS}>
           <Students />
         </Route>
-        <Redirect to={PATH_ROOT} />
+        <Route path={PATH_ROOT}>
+          <AddStudent />
+        </Route>
+        <Redirect to={PATH_STUDENTS} />
       </Switch>
     </BrowserRouter>
   )

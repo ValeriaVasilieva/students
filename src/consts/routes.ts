@@ -1,2 +1,2 @@
-export const PATH_ROOT = '/'
-export const PATH_STUDENTS = '/students'
+export const PATH_ROOT = '/add'
+export const PATH_STUDENTS = '/'
