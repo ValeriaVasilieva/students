@@ -2,7 +2,7 @@ import React, { forwardRef, useState, useEffect } from 'react'
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 
-import { FormValues } from '../../shared/RegistrationForm'
+import { StudentsForm } from '../../../models/EntityModels/EntityModels'
 import { ColorsType, colorCircle } from '../../../consts/colors'
 
 import * as SC from './styled'
@@ -13,11 +13,11 @@ type Props = {
   options: ColorsType[]
   placeholder: string
   id: 'color'
-  setValue: UseFormSetValue<FormValues>
+  setValue: UseFormSetValue<StudentsForm>
   error?: string
 }
 
-const SelectColor = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<FormValues>>>((props, ref) => {
+const SelectColor = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<StudentsForm>>>((props, ref) => {
   const { onChange, onBlur, name, label, options, placeholder, setValue, id, error } = props
 
   const [isOpened, setIsOpened] = useState<boolean>(false)
@@ -27,8 +27,8 @@ const SelectColor = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegis
     setIsOpened(!isOpened)
   }
 
-  const getSelectedValue = (e: React.SyntheticEvent<HTMLDivElement>) => {
-    const selectedValue = e.currentTarget.dataset.value
+  const getSelectedValue = (value: string) => {
+    const selectedValue = value
     setSelectedValue(selectedValue || '')
     setIsOpened(false)
   }
@@ -43,9 +43,7 @@ const SelectColor = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegis
     }
   }, [selectedValue])
 
-  //а как написать что функция возвращает htmldivelement или string
-
-  const removePlaceholder = (selectedValue: string): any => {
+  const setPlaceholder = (selectedValue: string): JSX.Element | string => {
     if (selectedValue === 'lgbt') {
       return (
         <SC.OptionLgbt>
@@ -55,13 +53,7 @@ const SelectColor = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegis
         </SC.OptionLgbt>
       )
     } else if (selectedValue) {
-      return (
-        <SC.Option
-          color={options.map((option) => {
-            if (option.color === selectedValue) return option.value || ''
-          })}
-        />
-      )
+      return <SC.Option color={options.find(option => option.color === selectedValue)?.value} />
     } else return placeholder
   }
 
@@ -70,13 +62,13 @@ const SelectColor = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegis
       <SC.Base>
         <SC.Label>{label}</SC.Label>
         <SC.Select tabIndex={0} onClick={onClickOpen}>
-          {removePlaceholder(selectedValue)}
+          {setPlaceholder(selectedValue)}
         </SC.Select>
         <SC.Options isOpen={isOpened}>
           {options.map((option) => {
             if (option.value === 'lgbt') {
               return (
-                <SC.Option key={option.value} data-value={option.color} onClick={getSelectedValue} color={option.value}>
+                <SC.Option key={option.value} onClick={() => getSelectedValue(option.color)} color={option.value}>
                   {colorCircle.map(color => (
                     <SC.ColorBlock key={color} blockColor={color} />
                   ))}
@@ -86,8 +78,7 @@ const SelectColor = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegis
               return (
                 <SC.Option
                   key={option.value}
-                  data-value={option.color}
-                  onClick={getSelectedValue}
+                  onClick={() => getSelectedValue(option.color)}
                   color={option.value}
                 ></SC.Option>
               )

@@ -1,9 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
-import Login from './pages/Login'
+import AddStudent from './pages/AddStudent'
 import Students from './pages/Students'
-import CounterComponent from './store/CounterComponent'
 import { PATH_ROOT, PATH_STUDENTS } from './consts/routes'
 
 
@@ -12,14 +11,10 @@ const Router = () => {
     <BrowserRouter>
       <Switch>
         <Route exact path={PATH_ROOT}>
-          <Login />
+          <AddStudent />
         </Route>
         <Route path={PATH_STUDENTS}>
           <Students />
-        </Route>
-        <Route path="/testsM">
-          {/* Чтобы работал добавь observer */}
-          <CounterComponent />
         </Route>
         <Redirect to={PATH_ROOT} />
       </Switch>

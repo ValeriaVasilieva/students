@@ -1,7 +1,12 @@
 export type optionProps = {
   id: number
   value: string
-  text?: string
+}
+
+export type sortStudentsProps = {
+  id: number
+  value: string
+  text: string
 }
 
 export const prof = [
@@ -26,7 +31,7 @@ export const group = [
 ]
 
 export const sortStudents = [
-  { id: 1, value: 'name', text: 'Порядок навести' },
+  { id: 1, value: 'name', text: 'К порядку' },
   { id: 2, value: 'ageDown', text: 'Молодые' },
   { id: 3, value: 'ageUp', text: 'Старые' },
   { id: 4, value: 'scoreDown', text: 'Умные' },

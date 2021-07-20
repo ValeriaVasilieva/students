@@ -1,11 +1,10 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 
-import { Student } from '../models/types'
+import { Student, StudentsForm } from '../models/EntityModels/EntityModels'
 import { getStudents, postStudent, removeStudent } from '../api/students'
-import { FormValues } from '../components/shared/RegistrationForm'
 
 
-class StudentsCloud {
+class StudentsStore {
   defaultStudents: Student[] = []
   filteredStudents: Student[] = []
   sortValue = ''
@@ -47,10 +46,9 @@ class StudentsCloud {
 
   async postNewStudent(data: FormData) {
     await postStudent(data)
-    runInAction(async () => await this.setStudents())
   }
 
-  getCorrectFormatForPost = (data: FormValues) => {
+  getCorrectFormatAndPost = (data: StudentsForm) => {
     const entries = Object.entries(data).filter(entry => entry[0] !== 'avatar') as [string, string][]
 
     const file = data.avatar[0]
@@ -96,4 +94,4 @@ class StudentsCloud {
   }
 }
 
-export default new StudentsCloud()
+export default new StudentsStore()

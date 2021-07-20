@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useState } from 'react'
 import { UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 
-import { FormValues } from '../../shared/RegistrationForm'
+import { StudentsForm } from '../../../models/EntityModels/EntityModels'
 import { optionProps } from '../../../consts/optionsValues'
 
 import * as SC from './styled'
@@ -13,11 +13,11 @@ type Props = {
   options: optionProps[]
   placeholder: string
   id: 'prof' | 'sex' | 'group'
-  setValue: UseFormSetValue<FormValues>
+  setValue: UseFormSetValue<StudentsForm>
   error?: string
 }
 
-const Select = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<FormValues>>>((props, ref) => {
+const Select = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<StudentsForm>>>((props, ref) => {
   const { label, options, placeholder, setValue, id, error } = props
 
   const [isOpened, setIsOpened] = useState<boolean>(false)

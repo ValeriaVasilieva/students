@@ -1,5 +1,5 @@
 import { http } from '../services/httpClient'
-import { StudentsResponce, StudentsRequest } from '../models/RequestResponce'
+import { StudentsResponce } from '../models/ApiModels/ApiModels'
 
 
 export const getStudents = () => http.get<StudentsResponce>('/api/students')

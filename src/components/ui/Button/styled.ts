@@ -1,18 +1,18 @@
 import styled from 'styled-components'
 
-import { Texts } from '../../styled/Texts'
+import { TextSmall } from '../../styled/Texts'
 
 
 type Props = {
-  width?: string;
+  width?: string
   icon?: true
 }
 
 export const Base = styled.div<Props>`
-  width: ${({width}) => width};
+  width: ${({ width }) => width || '100%'};
 `
 
-export const Button = styled(Texts).attrs({
+export const Button = styled(TextSmall).attrs({
   color: 'secondary'
 })<Props>`
   width: 100%;
@@ -24,7 +24,7 @@ export const Button = styled(Texts).attrs({
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  
+
   .icon {
     padding-right: 15px;
   }

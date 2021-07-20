@@ -1,7 +1,7 @@
 import React, { forwardRef, useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 
-import { FormValues } from '../../shared/RegistrationForm'
+import { StudentsForm } from '../../../models/EntityModels/EntityModels'
 
 import * as SC from './styled'
 
@@ -10,32 +10,27 @@ type Props = {
   label: string
 }
 
-const File = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<FormValues>>>((props, ref) => {
+const Avatar = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<StudentsForm>>>((props, ref) => {
   const { onChange, onBlur, name, label } = props
 
   const [avatarSrc, setAvatarSrc] = useState('')
 
-  const handleChange = (e: any) => {
-    const file = e.currentTarget.files[0]
-    console.log(file)
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files && e.currentTarget.files[0]
     const reader = new FileReader()
 
-    const a = reader.readAsDataURL(file)
-
-    reader.onload = function () {
-      if (reader.result !== null) {
-        const binary = reader.result.toString()
-        console.log(typeof reader.result.toString())
-
-        setAvatarSrc(binary)
+    if (file) {
+      reader.readAsDataURL(file)
+      reader.onload = function () {
+        if (reader.result !== null) {
+          const binary = reader.result.toString()
+          setAvatarSrc(binary)
+        }
+      }
+      reader.onerror = function () {
+        return console.warn('Файл не вижу')
       }
     }
-    reader.onerror = function () {
-      return alert(reader.error)
-    }
-
-    console.log(a)
   }
 
   return (
@@ -61,6 +56,6 @@ const File = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<For
   )
 })
 
-File.displayName = 'File'
+Avatar.displayName = 'Avatar'
 
-export default File
+export default Avatar

@@ -1,35 +1,32 @@
 import styled from 'styled-components'
 
-import { Headings, Texts } from '../../styled/Texts'
-import arrowLeft from '../../../assets/icons/arrow-left.svg'
+import { H1 } from '../../styled/Texts'
 
 
 export const Base = styled.div`
   margin-top: 21px;
 `
 
-export const Link = styled(Texts)`
-  text-decoration: none;
-  text-transform: uppercase;
-
-  &::before {
-    content: url(${arrowLeft});
-    vertical-align: middle;
-    padding-right: 16px;
+export const Heading = styled(H1)`
+  @media (max-width: 600px) {
+    text-align: center;
   }
 `
-
-export const Header = styled(Headings).attrs({ main: true })``
 
 export const Form = styled.form`
   display: flex;
   flex-wrap: wrap;
+
+  @media (max-width: 950px) {
+    justify-content: space-between;
+  }
 `
 
 export const Fieldset = styled.fieldset`
   border: none;
   width: 380px;
   margin-right: 100px;
+  padding: 0;
 
   &:nth-child(1) {
     width: 100%;
@@ -41,5 +38,14 @@ export const Fieldset = styled.fieldset`
 
   &:last-child {
     margin-top: 25px;
+  }
+
+  @media (max-width: 950px) {
+    margin-right: 24px;
+  }
+
+  @media (max-width: 860px) {
+    margin: 0;
+    width: 100%;
   }
 `

@@ -1,63 +1,44 @@
-import React, { FC } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { Link, useHistory } from 'react-router-dom'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 
-import { PATH_STUDENTS } from '../../../consts/routes'
 import { Container } from '../../styled/Container'
 import Input from '../../ui/Input'
 import Button from '../../ui/Button'
 import Select from '../../ui/Select'
-import Select2 from '../../ui/Select2'
 import * as OP from '../../../consts/optionsValues'
-import File from '../../ui/File'
+import Avatar from '../../ui/File'
 import SelectColor from '../../ui/SelectColor'
 import { colors } from '../../../consts/colors'
+import { StudentsForm } from '../../../models/EntityModels/EntityModels'
+import { PATH_STUDENTS } from '../../../consts/routes'
+import studentsStore from '../../../store/Students'
 
 import * as SC from './styled'
 
 
-type Props = {
-  createStudent(dataForm: FormValues): void
-}
-
-export type FormValues = {
-  name: string
-  email: string
-  birth: string
-  score: string
-  sex: string
-  prof: string
-  group: string
-  avatar: FileList
-  color: string
-}
-
-const RegistrationForm: FC<Props> = ({ createStudent }) => {
+const RegistrationForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    control
-  } = useForm<FormValues>({ mode: 'onBlur' })
+    setValue
+  } = useForm<StudentsForm>({ mode: 'onBlur' })
 
   const history = useHistory()
 
-  const onSubmit = (data: FormValues) => {
-    createStudent(data)
+  const onSubmit = (data: StudentsForm) => {
     history.push(PATH_STUDENTS)
+    studentsStore.getCorrectFormatAndPost(data)
   }
 
   return (
     <SC.Base>
       <Container>
-        <Link to={PATH_STUDENTS} style={{ textDecoration: 'none' }}>
-          <SC.Link>Назад к списку студентов</SC.Link>
-        </Link>
-        <SC.Header as={'h1'}>Новый студент</SC.Header>
+        <SC.Heading as={'h1'}>Новый студент</SC.Heading>
         <SC.Form onSubmit={handleSubmit(onSubmit)}>
           <SC.Fieldset>
-            <File label="Сменить аватар" {...register('avatar')} />
+            <Avatar label="Сменить аватар" {...register('avatar')} />
           </SC.Fieldset>
           <SC.Fieldset>
             <Input
@@ -154,28 +135,3 @@ const RegistrationForm: FC<Props> = ({ createStudent }) => {
 }
 
 export default RegistrationForm
-
-{
-  /* {
-              <Controller
-                rules={{
-                  required: {
-                    value: true,
-                    message: 'Это обязательное поле'
-                  }
-                }}
-                control={control}
-                defaultValue=""
-                name="sex"
-                render={({ field, fieldState: { error } }) => (
-                  <Select2
-                    options={OP.sex}
-                    placeholder={'Выбрать'}
-                    label={'Пол'}
-                    field={field}
-                    error={error?.message}
-                  />
-                )}
-              />
-            } */
-}

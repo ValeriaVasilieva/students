@@ -1,6 +1,6 @@
-import styled, {css} from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { Texts } from '../../styled/Texts'
+import { TextSmall } from '../../styled/Texts'
 import sortArrow from '../../../assets/icons/sort_arrow.svg'
 
 
@@ -15,9 +15,13 @@ export const Base = styled.div`
   flex-direction: column;
   margin-left: 20px;
   box-sizing: border-box;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
 `
 
-export const Select = styled(Texts).attrs({color: 'placeholder'})<Props>`
+export const Select = styled(TextSmall).attrs({ color: 'placeholder' })<Props>`
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   border: none;
@@ -39,13 +43,16 @@ export const Select = styled(Texts).attrs({color: 'placeholder'})<Props>`
     border: 2px solid ${props => props.theme.colors.primary};
   }
 
-  ${({colorValue}) => colorValue && css`
-    color: ${props => props.theme.text.primary}
-  `}
+  ${({ colorValue }) =>
+    colorValue &&
+    css`
+      color: ${props => props.theme.text.primary};
+    `}
 `
 
 export const Options = styled.div<Props>`
   position: absolute;
+  width: 100%;
   cursor: pointer;
   z-index: 1;
   box-sizing: border-box;
@@ -57,7 +64,7 @@ export const Options = styled.div<Props>`
   top: 55px;
 `
 
-export const Option = styled(Texts)`
+export const Option = styled(TextSmall)`
   line-height: 35px;
   padding: 0 5px;
   border-radius: inherit;

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import { Student } from '../../../models/types'
+import { Student } from '../../../models/EntityModels/EntityModels'
 import { colorCircle } from '../../../consts/colors'
 
 import * as SC from './styled'
@@ -14,7 +14,7 @@ type Props = {
 const TableRow: FC<Props> = (props) => {
   const { student, onClickDeleteStudent } = props
 
-  const drawCircle = (colorValue: string): any => {
+  const drawColorCell = (colorValue: string): JSX.Element => {
     if (colorValue === 'lgbt') {
       return (
         <SC.Color>
@@ -33,7 +33,7 @@ const TableRow: FC<Props> = (props) => {
       const firstLettersArr = nameArr.map(word => word.charAt(0))
       let newAvatar = '??'
       if (firstLettersArr.length === 1) {
-        newAvatar = firstLettersArr.join('') + firstLettersArr.join('')
+        newAvatar = firstLettersArr.join('')
       }
       if (nameArr.length > 1) {
         const firstLetters = [firstLettersArr[0], firstLettersArr[1]]
@@ -41,7 +41,11 @@ const TableRow: FC<Props> = (props) => {
       }
       return <SC.AvatarWithoutPic>{newAvatar}</SC.AvatarWithoutPic>
     }
-    return <SC.Avatar avatarSrc={student.avatar} />
+    return (
+      <SC.Avatar avatarSrc={student.avatar}>
+        <SC.AvatarBorder />
+      </SC.Avatar>
+    )
   }
 
   return (
@@ -53,7 +57,8 @@ const TableRow: FC<Props> = (props) => {
         <SC.GridCell>{student.group}</SC.GridCell>
         <SC.GridCell>{student.age}</SC.GridCell>
         <SC.GridCell>{student.score}</SC.GridCell>
-        {drawCircle(student.color)}
+        {drawColorCell(student.color)}
+        <SC.VerticalLine />
         <SC.Button onClick={() => onClickDeleteStudent(student.id)} />
       </SC.GridRow>
     </SC.Base>

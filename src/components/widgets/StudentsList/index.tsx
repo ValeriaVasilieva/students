@@ -1,26 +1,28 @@
-import React, { FC } from 'react'
+import React, { useEffect } from 'react'
+import { observer } from 'mobx-react-lite'
 
 import { Container } from '../../styled/Container'
-import TableRow from '../TableRow'
-import { Student } from '../../../models/types'
+import TableRow from '../../entities/TableRow'
+import studentsStore from '../../../store/Students'
 
 import * as SC from './styled'
 
 
-type Props = {
-  students: Student[]
-  onClickDeleteStudent(id: number): void
-}
-
-const StudentsList: FC<Props> = (props) => {
-  const { students, onClickDeleteStudent } = props
+const StudentsList = observer(() => {
+  useEffect(() => {
+    studentsStore.setStudents()
+  }, [])
 
   function renderList() {
-    if (students.length === 0) {
-      return <h1>Нет нихуа</h1>
+    if (studentsStore.filteredStudents.length === 0) {
+      return <h1>Бесконечная пустота и одиночество</h1>
     } else {
-      return students.map(student => (
-        <TableRow student={student} key={student.id} onClickDeleteStudent={e => onClickDeleteStudent(e)}></TableRow>
+      return studentsStore.filteredStudents.map(student => (
+        <TableRow
+          student={student}
+          key={student.id}
+          onClickDeleteStudent={e => studentsStore.deleteStudent(e)}
+        ></TableRow>
       ))
     }
   }
@@ -41,6 +43,6 @@ const StudentsList: FC<Props> = (props) => {
       </Container>
     </SC.Base>
   )
-}
+})
 
 export default StudentsList

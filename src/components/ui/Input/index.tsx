@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react'
-import { FieldError, UseFormRegister } from 'react-hook-form'
+import { UseFormRegister } from 'react-hook-form'
 
-import { FormValues } from '../../shared/RegistrationForm'
+import { StudentsForm } from '../../../models/EntityModels/EntityModels'
 
 import * as SC from './styled'
 
@@ -14,15 +14,24 @@ type Props = {
   error?: string
 }
 
-const Input = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<FormValues>>>((props, ref) => {
-  const { label, id, placeholder, type, error, ...inputProps } = props
+const Input = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<StudentsForm>>>((props, ref) => {
+  const { label, id, placeholder, type, error, onChange, onBlur, name } = props
 
   return (
     <SC.Base>
       <SC.Label as={'label'} htmlFor={id}>
         {label}
       </SC.Label>
-      <SC.Input as={'input'} placeholder={placeholder} type={type || 'text'} {...inputProps} />
+      <SC.Input
+        ref={ref}
+        id={id}
+        as={'input'}
+        placeholder={placeholder}
+        type={type || 'text'}
+        onChange={onChange}
+        onBlur={onBlur}
+        name={name}
+      />
       <SC.ErrorMessage as="span">{error}</SC.ErrorMessage>
     </SC.Base>
   )

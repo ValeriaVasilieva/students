@@ -5,10 +5,18 @@ html,body {
   height: 100%;
   margin-left: calc(100vw - 100%);
   margin-right: 0; 
+  overflow-x: hidden;
 }
 
 body {
   font-family: 'geometria', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 900) {
+  html,body {
+    width: 100%;
+    margin: 0;
+  }
 }

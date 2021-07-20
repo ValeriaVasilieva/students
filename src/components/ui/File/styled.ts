@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Texts, Headings } from '../../styled/Texts'
+import { TextNormal, H1 } from '../../styled/Texts'
 
 
 type Props = {
@@ -15,9 +15,7 @@ export const InputFile = styled.input.attrs({ type: 'file' })`
   display: none;
 `
 
-export const Label = styled(Texts).attrs({
-  bigger16: true
-})`
+export const Label = styled(TextNormal)`
   text-decoration: underline;
   position: relative;
   margin-top: 20px;
@@ -37,9 +35,8 @@ export const Label = styled(Texts).attrs({
   }
 `
 
-export const AvatarBox = styled(Headings).attrs({
-  color: 'mainTheme',
-  main: true
+export const AvatarBox = styled(H1).attrs({
+  color: 'mainTheme'
 })`
   position: relative;
   height: 82px;

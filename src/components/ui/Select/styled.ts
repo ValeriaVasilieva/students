@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Texts } from '../../styled/Texts'
+import { TextSmall } from '../../styled/Texts'
 import arrow from '../../../assets/icons/select_arrow.svg'
 import check from '../../../assets/icons/check.svg'
 
@@ -17,7 +17,7 @@ export const Base = styled.div`
   width: 100%;
 `
 
-export const Label = styled(Texts)`
+export const Label = styled(TextSmall)`
   margin: 20px 0 8px 0;
 
   &::after {
@@ -27,7 +27,7 @@ export const Label = styled(Texts)`
   }
 `
 
-export const Select = styled(Texts).attrs({ color: 'placeholder' })<Props>`
+export const Select = styled(TextSmall).attrs({ color: 'placeholder' })<Props>`
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   border: none;
@@ -50,7 +50,7 @@ export const Select = styled(Texts).attrs({ color: 'placeholder' })<Props>`
   ${({ hasValue }) => hasValue && 'color: black'};
 `
 
-export const ErrorMessage = styled(Texts).attrs({
+export const ErrorMessage = styled(TextSmall).attrs({
   color: 'error'
 })`
   margin: 2px 0;
@@ -70,7 +70,7 @@ export const Options = styled.div<Props>`
   top: 100px;
 `
 
-export const Option = styled(Texts)`
+export const Option = styled(TextSmall)`
   line-height: 35px;
   padding: 0 12px;
   border-radius: inherit;

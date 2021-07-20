@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 
-import { Texts } from '../../styled/Texts'
+import { TextNormal } from '../../styled/Texts'
 
 
-export const Base = styled.div``
+export const Base = styled.div`
+  margin-bottom: 20px;
+`
 
 export const GridHeader = styled.div`
   display: grid;
@@ -20,9 +22,18 @@ export const List = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   padding: 15px 20px;
+
+  @media (max-width: 850px) {
+    box-shadow: none;
+    display: flex;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    justify-content: space-between;
+    padding: 0px;
+  }
 `
 
-export const GridCell = styled(Texts).attrs({ bigger16: true })`
+export const GridCell = styled(TextNormal)`
   height: 40px;
   line-height: 20px;
 `

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { Texts } from '../../styled/Texts'
+import { TextSmall } from '../../styled/Texts'
 
 
 export const Base = styled.div`
@@ -9,7 +9,7 @@ export const Base = styled.div`
   width: 100%;
 `
 
-export const Label = styled(Texts)`
+export const Label = styled(TextSmall)`
   margin: 20px 0 8px 0;
 
   &::after {
@@ -19,7 +19,7 @@ export const Label = styled(Texts)`
   }
 `
 
-export const Input = styled(Texts)`
+export const Input = styled(TextSmall)`
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   border: none;
@@ -39,7 +39,7 @@ export const Input = styled(Texts)`
   }
 `
 
-export const ErrorMessage = styled(Texts).attrs({
+export const ErrorMessage = styled(TextSmall).attrs({
   color: 'error'
 })`
   margin: 2px 0;

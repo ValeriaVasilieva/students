@@ -1,6 +1,6 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 
-import {ReactComponent as PlusIcon} from '../../../assets/icons/plus.svg'
+import { ReactComponent as PlusIcon } from '../../../assets/icons/plus.svg'
 
 import * as SC from './styled'
 
@@ -11,18 +11,13 @@ interface ButtonProps {
   width?: string
 }
 
-const Button:FC<ButtonProps> = (props) => {
-
+const Button: FC<ButtonProps> = (props) => {
   const { buttonText, icon, width } = props
 
   return (
     <SC.Base width={width}>
-
-      <SC.Button 
-        as={'button'}
-        icon={icon}
-      >
-        {icon && <PlusIcon className="icon"/>}
+      <SC.Button as={'button'} icon={icon}>
+        {icon && <PlusIcon className="icon" />}
         {buttonText}
       </SC.Button>
     </SC.Base>
