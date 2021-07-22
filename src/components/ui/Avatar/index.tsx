@@ -36,13 +36,14 @@ const Avatar = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<S
   return (
     <SC.Base>
       <SC.AvatarBox>
-        ФИ
+        <SC.NameAvatar visible={avatarSrc}>ФИ</SC.NameAvatar>
         <SC.Avatar src={avatarSrc} visible={avatarSrc} />
       </SC.AvatarBox>
       <SC.Label as={'label'} htmlFor="avatar">
         {label}
       </SC.Label>
       <SC.InputFile
+        accept=".jpg, .jpeg, .gif, .png"
         id="avatar"
         ref={ref}
         onChange={(e) => {

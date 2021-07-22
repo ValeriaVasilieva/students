@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { H1 } from '../../styled/Texts'
+import { H1, TextSmall } from '../../styled/Texts'
 
 
 export const Base = styled.div`
@@ -49,4 +49,10 @@ export const Fieldset = styled.fieldset`
     margin: 0;
     width: 100%;
   }
+`
+
+export const ErrorMessage = styled(TextSmall).attrs({
+  color: 'error'
+})`
+  margin: 10px 0;
 `

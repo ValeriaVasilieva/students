@@ -4,11 +4,22 @@ import { Student, StudentsForm } from '../models/EntityModels/EntityModels'
 import { getStudents, postStudent, removeStudent } from '../api/students'
 
 
+type PostError = {
+  isStatus: boolean
+  status: string
+  statusText: string
+}
+
 class StudentsStore {
   defaultStudents: Student[] = []
   filteredStudents: Student[] = []
   sortValue = ''
   state = { render: true }
+  postError: PostError = {
+    isStatus: false,
+    status: '',
+    statusText: ''
+  }
 
   constructor() {
     makeAutoObservable(this)
@@ -45,10 +56,14 @@ class StudentsStore {
   }
 
   async postNewStudent(data: FormData) {
-    await postStudent(data)
+    await postStudent(data).catch((err) => {
+      this.postError.isStatus = true
+      this.postError.statusText = err.response.statusText
+      this.postError.status = err.response.status
+    })
   }
 
-  getCorrectFormatAndPost = (data: StudentsForm) => {
+  getCorrectFormatAndPost = async (data: StudentsForm) => {
     const entries = Object.entries(data).filter(entry => entry[0] !== 'avatar') as [string, string][]
 
     const file = data.avatar[0]
@@ -69,7 +84,7 @@ class StudentsStore {
       formData.append(...entry)
     })
 
-    this.postNewStudent(formData)
+    await this.postNewStudent(formData)
   }
 
   getFilterStudents(value: string) {

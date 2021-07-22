@@ -18,7 +18,7 @@ export const Base = styled.div`
 `
 
 export const Label = styled(TextSmall)`
-  margin: 20px 0 8px 0;
+  margin: 10px 0 8px 0;
 
   &::after {
     content: '*';
@@ -51,7 +51,7 @@ export const Select = styled(TextSmall).attrs({ color: 'placeholder' })`
 export const ErrorMessage = styled(TextSmall).attrs({
   color: 'error'
 })`
-  margin: 2px 0;
+  margin: 10px 0;
 `
 
 export const Options = styled.div<Props>`
@@ -78,25 +78,18 @@ export const Option = styled(TextSmall)<Props>`
   background: ${({ color }) => color};
   transition: transform 0.2s;
   overflow: hidden;
+  outline: none;
 
   &:hover {
     transform: scale(1.2);
   }
-`
 
-//может и сделаю ее если время будет
-const rideAnimation = keyframes`
-  from {
-    transform: translate(0, 0);
-  }
-  to{
-    transform: translate(320, 0);
+  &:focus {
+    transform: scale(1.2);
   }
 `
 
-export const OptionLgbt = styled(Option)`
-  animation: ${rideAnimation} 2s;
-`
+export const OptionLgbt = styled(Option)``
 
 export const ColorBlock = styled.div<Props>`
   height: 5px;

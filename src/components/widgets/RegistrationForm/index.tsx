@@ -1,6 +1,8 @@
+/* eslint-disable no-debugger */
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
 
 import { Container } from '../../styled/Container'
 import Input from '../../ui/Input'
@@ -17,7 +19,7 @@ import studentsStore from '../../../store/Students'
 import * as SC from './styled'
 
 
-const RegistrationForm = () => {
+const RegistrationForm = observer(() => {
   const {
     register,
     handleSubmit,
@@ -28,8 +30,12 @@ const RegistrationForm = () => {
   const history = useHistory()
 
   const onSubmit = (data: StudentsForm) => {
-    history.push(PATH_STUDENTS)
-    studentsStore.getCorrectFormatAndPost(data)
+    studentsStore.getCorrectFormatAndPost(data).then(() => {
+      if (!studentsStore.postError.isStatus) {
+        history.push(PATH_STUDENTS)
+      }
+      studentsStore.postError.isStatus = false
+    })
   }
 
   return (
@@ -127,11 +133,16 @@ const RegistrationForm = () => {
           </SC.Fieldset>
           <SC.Fieldset>
             <Button buttonText={'Создать'} />
+            {studentsStore.postError.isStatus && (
+              <SC.ErrorMessage>
+                {studentsStore.postError.status} : {studentsStore.postError.statusText}
+              </SC.ErrorMessage>
+            )}
           </SC.Fieldset>
         </SC.Form>
       </Container>
     </SC.Base>
   )
-}
+})
 
 export default RegistrationForm

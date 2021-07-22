@@ -10,7 +10,7 @@ export const Base = styled.div`
 `
 
 export const Label = styled(TextSmall)`
-  margin: 20px 0 8px 0;
+  margin: 10px 0 8px 0;
 
   &::after {
     content: '*';
@@ -42,5 +42,5 @@ export const Input = styled(TextSmall)`
 export const ErrorMessage = styled(TextSmall).attrs({
   color: 'error'
 })`
-  margin: 2px 0;
+  margin: 10px 0;
 `

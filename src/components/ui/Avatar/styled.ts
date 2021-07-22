@@ -35,18 +35,12 @@ export const Label = styled(TextNormal)`
   }
 `
 
-export const AvatarBox = styled(H1).attrs({
-  color: 'mainTheme'
-})`
+export const AvatarBox = styled.div`
   position: relative;
   height: 82px;
   width: 82px;
-  background: white;
   border-radius: 50%;
   box-shadow: ${props => props.theme.boxShadow};
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 export const Avatar = styled.img<Props>`
@@ -59,4 +53,17 @@ export const Avatar = styled.img<Props>`
   border-radius: 50%;
   object-fit: cover;
   ${({ visible }) => !visible && 'display: none'};
+`
+
+export const NameAvatar = styled(H1).attrs({
+  color: 'mainTheme'
+})<Props>`
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${({ visible }) => visible && 'display: none'};
 `
