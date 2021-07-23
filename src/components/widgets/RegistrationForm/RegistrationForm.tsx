@@ -1,11 +1,10 @@
-/* eslint-disable no-debugger */
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 
 import { Container } from '../../styled/Container'
-import Input from '../../ui/Input'
+import Input from '../../ui/Input/Input'
 import Button from '../../ui/Button'
 import Select from '../../ui/Select'
 import * as OP from '../../../consts/optionsValues'
@@ -31,10 +30,9 @@ const RegistrationForm = observer(() => {
 
   const onSubmit = (data: StudentsForm) => {
     studentsStore.getCorrectFormatAndPost(data).then(() => {
-      if (!studentsStore.postError.isStatus) {
+      if (!studentsStore.postError.status) {
         history.push(PATH_STUDENTS)
       }
-      studentsStore.postError.isStatus = false
     })
   }
 
@@ -79,7 +77,7 @@ const RegistrationForm = observer(() => {
               {...register('score', {
                 required: "Ooops, let's try again",
                 maxLength: { value: 3, message: 'Are you kidding me?' },
-                pattern: { value: /\d{1,5}/, message: 'Just business, just numbers' }
+                pattern: { value: /^[0-9]{1,3}$/, message: 'Just business, just numbers' }
               })}
               error={errors.score?.message}
             />
@@ -133,7 +131,7 @@ const RegistrationForm = observer(() => {
           </SC.Fieldset>
           <SC.Fieldset>
             <Button buttonText={'Создать'} />
-            {studentsStore.postError.isStatus && (
+            {studentsStore.postError.status && (
               <SC.ErrorMessage>
                 {studentsStore.postError.status} : {studentsStore.postError.statusText}
               </SC.ErrorMessage>

@@ -5,7 +5,6 @@ import { getStudents, postStudent, removeStudent } from '../api/students'
 
 
 type PostError = {
-  isStatus: boolean
   status: string
   statusText: string
 }
@@ -16,7 +15,6 @@ class StudentsStore {
   sortValue = ''
   state = { render: true }
   postError: PostError = {
-    isStatus: false,
     status: '',
     statusText: ''
   }
@@ -56,11 +54,16 @@ class StudentsStore {
   }
 
   async postNewStudent(data: FormData) {
-    await postStudent(data).catch((err) => {
-      this.postError.isStatus = true
-      this.postError.statusText = err.response.statusText
-      this.postError.status = err.response.status
-    })
+    await postStudent(data)
+      .then((resolve) => {
+        if (resolve.status === 200) {
+          this.postError.status = ''
+        }
+      })
+      .catch((err) => {
+        this.postError.statusText = err.response.statusText
+        this.postError.status = err.response.status
+      })
   }
 
   getCorrectFormatAndPost = async (data: StudentsForm) => {
