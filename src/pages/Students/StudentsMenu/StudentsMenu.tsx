@@ -12,7 +12,7 @@ import { Container } from '@components/styled/Container'
 import * as SC from './styled'
 
 
-const StudentsMenu: FC = observer(() => (
+const StudentsFilterControls: FC = observer(() => (
   <SC.Base>
     <Container>
       <SC.Flex>
@@ -25,14 +25,13 @@ const StudentsMenu: FC = observer(() => (
       </SC.Flex>
       <SC.Flex>
         <SC.SearchBar
-          as={'input'}
           placeholder={'Поиск по имени'}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => studentsStore.getFilterStudents(e.currentTarget.value)}
+          onChange={e => studentsStore.getFilterStudents(e.currentTarget.value)}
         />
         <SortStudents
           sortOptions={sortStudents}
           placeholder={'Фильтр'}
-          onChangeSortList={(value, text) => studentsStore.getSortedStudents(value, text)}
+          onChangeSortList={option => studentsStore.getSortedStudents(option)}
           sortValue={studentsStore.sortValue}
         />
       </SC.Flex>
@@ -40,4 +39,4 @@ const StudentsMenu: FC = observer(() => (
   </SC.Base>
 ))
 
-export default StudentsMenu
+export default StudentsFilterControls

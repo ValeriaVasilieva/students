@@ -1,17 +1,17 @@
-import React, { FC, useState } from 'react'
-import { SortStudentsProps } from '@consts/optionsValues'
+import React, { FC, PropsWithChildren, useState } from 'react'
+import { SortStudentsOption } from '@consts/optionsValues'
 
 import * as SC from './styled'
 
 
-type Props = {
-  sortOptions: Array<SortStudentsProps>
+type Props<T extends string = string> = {
+  sortOptions: Array<SortStudentsOption<T>>
   placeholder: string
-  onChangeSortList(value: string, text: string): void
+  onChangeSortList(option: SortStudentsOption<T>): void
   sortValue: string
 }
 
-const SortStudents: FC<Props> = (props) => {
+const SortStudents = <T extends string = string>(props: PropsWithChildren<Props<T>>) => {
   const { sortOptions, placeholder, sortValue, onChangeSortList } = props
 
   const [isOpened, setIsOpened] = useState<boolean>(false)
@@ -23,12 +23,12 @@ const SortStudents: FC<Props> = (props) => {
     e.preventDefault()
   }
 
-  const checkOpened = (e: MouseEvent): void => {
+  const closeFilterSelect = (e: MouseEvent): void => {
     if (e.defaultPrevented) return
     else setIsOpened(false)
   }
 
-  document.addEventListener('click', checkOpened)
+  document.addEventListener('click', closeFilterSelect)
 
   return (
     <SC.Base>
@@ -37,7 +37,7 @@ const SortStudents: FC<Props> = (props) => {
       </SC.Select>
       <SC.Options isOpen={isOpened}>
         {sortOptions.map(option => (
-          <SC.Option key={option.id} onClick={() => onChangeSortList(option.value, option.text)}>
+          <SC.Option key={option.id} onClick={() => onChangeSortList(option)}>
             {option.text}
           </SC.Option>
         ))}

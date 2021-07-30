@@ -1,4 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx'
+import { SortStudentsOption, SortTypes } from '@consts/optionsValues'
 
 import { StudentFormValues } from '@components/widgets/StudentForm/StudentForm'
 import { Student } from '@models/Students/EntityModels/Students'
@@ -79,22 +80,18 @@ class StudentsStore {
     this.filteredStudents = this.defaultStudents.filter(student => student.name.toLowerCase().includes(value || ''))
   }
 
-  getSortedStudents(value: string, text: string) {
+  getSortedStudents({ text, sortType }: SortStudentsOption<SortTypes>) {
     this.sortValue = text
-
-    switch (value) {
-      case 'name':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => (a.name < b.name ? -1 : 1)))
-      case 'ageDown':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +a.age - +b.age))
-      case 'ageUp':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +b.age - +a.age))
-      case 'scoreDown':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +b.score - +a.score))
-      case 'scoreUp':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +a.score - +b.score))
-    }
+    this.filteredStudents = this.filteredStudents.sort(sortFuncs[sortType])
   }
+}
+
+const sortFuncs: { [SortType in SortTypes]: (a: Student, b: Student) => number } = {
+  name: (a, b) => (a.name < b.name ? -1 : 1),
+  ageDown: (a, b) => +a.age - +b.age,
+  ageUp: (a, b) => +a.age - +b.age,
+  scoreDown: (a, b) => +a.age - +b.age,
+  scoreUp: (a, b) => +a.age - +b.age
 }
 
 export default new StudentsStore()

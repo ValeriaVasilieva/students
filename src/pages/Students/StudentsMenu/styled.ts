@@ -28,7 +28,9 @@ export const ButtonBox = styled.div`
   }
 `
 
-export const SearchBar = styled(TextSmall)`
+export const SearchBar = styled.input`
+  font-size: 15px;
+  font-weight: 400;
   width: 100%;
   height: 48px;
   box-shadow: ${props => props.theme.boxShadow};

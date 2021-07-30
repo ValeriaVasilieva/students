@@ -13,20 +13,6 @@ const StudentsList: FC = observer(() => {
     studentsStore.setStudents()
   }, [])
 
-  const renderList = () => {
-    if (studentsStore.filteredStudents.length === 0) {
-      return <h1>Бесконечная пустота и одиночество</h1>
-    } else {
-      return studentsStore.filteredStudents.map(student => (
-        <TableRow
-          student={student}
-          key={student.id}
-          onClickDeleteStudent={e => studentsStore.deleteStudent(e)}
-        ></TableRow>
-      ))
-    }
-  }
-
   return (
     <SC.Base>
       <Container>
@@ -39,7 +25,19 @@ const StudentsList: FC = observer(() => {
           <SC.GridCell>Рейтинг</SC.GridCell>
           <SC.GridCell></SC.GridCell>
         </SC.GridHeader>
-        <SC.List>{renderList()}</SC.List>
+        <SC.List>
+          {studentsStore.filteredStudents.length === 0 ? (
+            <h1>Бесконечная пустота и одиночество</h1>
+          ) : (
+            studentsStore.filteredStudents.map(student => (
+              <TableRow
+                student={student}
+                key={student.id}
+                onClickDeleteStudent={e => studentsStore.deleteStudent(e)}
+              ></TableRow>
+            ))
+          )}
+        </SC.List>
       </Container>
     </SC.Base>
   )
