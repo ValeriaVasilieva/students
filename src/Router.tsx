@@ -1,8 +1,8 @@
 import React from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
-import AddStudent from './pages/AddStudent'
-import Students from './pages/Students'
+import AddStudent from './pages/AddStudent/AddStudent'
+import Students from './pages/Students/Students'
 import { PATH_ROOT, PATH_STUDENTS } from './consts/routes'
 
 

@@ -1,39 +1,45 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
-import { observer } from 'mobx-react-lite'
+import * as OP from '@consts/optionsValues'
+import { colors } from '@consts/colors'
 
-import { Container } from '../../styled/Container'
-import Input from '../../ui/Input/Input'
-import Button from '../../ui/Button'
-import Select from '../../ui/Select'
-import * as OP from '../../../consts/optionsValues'
-import Avatar from '../../ui/Avatar'
-import SelectColor from '../../ui/SelectColor'
-import { colors } from '../../../consts/colors'
-import { StudentsForm } from '../../../models/EntityModels/EntityModels'
-import { PATH_STUDENTS } from '../../../consts/routes'
-import studentsStore from '../../../store/Students'
+import { Container } from '@components/styled/Container'
+import Input from '@components/ui/Input/Input'
+import Button from '@components/ui/Button'
+import Select from '@components/ui/Select'
+import AvatarUpload from '@components/ui/AvatarUpload'
 
 import * as SC from './styled'
 
 
-const RegistrationForm = observer(() => {
+export type StudentFormValues = {
+  name: string
+  email: string
+  birth: string
+  score: string
+  sex: string
+  prof: string
+  group: string
+  avatar: FileList
+  color: string
+}
+
+type Props = {
+  onSubmitForm(data: StudentFormValues): void
+  errorStatus: string
+  errorMessage: string
+}
+
+const StudentForm: FC<Props> = ({ onSubmitForm, errorStatus, errorMessage }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue
-  } = useForm<StudentsForm>({ mode: 'onBlur' })
+  } = useForm<StudentFormValues>()
 
-  const history = useHistory()
-
-  const onSubmit = (data: StudentsForm) => {
-    studentsStore.getCorrectFormatAndPost(data).then(() => {
-      if (!studentsStore.postError.status) {
-        history.push(PATH_STUDENTS)
-      }
-    })
+  const onSubmit = (data: StudentFormValues) => {
+    onSubmitForm(data)
   }
 
   return (
@@ -42,7 +48,7 @@ const RegistrationForm = observer(() => {
         <SC.Heading as={'h1'}>Новый студент</SC.Heading>
         <SC.Form onSubmit={handleSubmit(onSubmit)}>
           <SC.Fieldset>
-            <Avatar label="Сменить аватар" {...register('avatar')} />
+            <AvatarUpload label="Сменить аватар" id={'avatar'} {...register('avatar')} />
           </SC.Fieldset>
           <SC.Fieldset>
             <Input
@@ -94,46 +100,42 @@ const RegistrationForm = observer(() => {
           <SC.Fieldset>
             <Select
               label={'Пол'}
-              id={'sex'}
               placeholder={'Выбрать'}
               options={OP.sex}
-              setValue={setValue}
+              onSelected={(valueSelect: string) => setValue('sex', valueSelect)}
               {...register('sex', { required: 'Your choice is very important for us' })}
               error={errors.sex?.message}
             />
             <Select
               label={'Специальность'}
-              id={'prof'}
               placeholder={'Выбрать'}
               options={OP.prof}
-              setValue={setValue}
+              onSelected={(valueSelect: string) => setValue('prof', valueSelect)}
               {...register('prof', { required: 'Your choice is very important for us' })}
               error={errors.prof?.message}
             />
             <Select
               label={'Группа'}
-              id={'group'}
               placeholder={'Выбрать'}
               options={OP.group}
-              setValue={setValue}
+              onSelected={(valueSelect: string) => setValue('group', valueSelect)}
               {...register('group', { required: 'Your choice is very important for us' })}
               error={errors.group?.message}
             />
-            <SelectColor
+            <Select
               label={'Любимый цвет'}
-              options={colors}
               placeholder={'Выбрать'}
-              id={'color'}
+              options={colors}
+              onSelected={(valueSelect: string) => setValue('color', valueSelect)}
               {...register('color', { required: 'Your choice is very important for us' })}
               error={errors.color?.message}
-              setValue={setValue}
             />
           </SC.Fieldset>
           <SC.Fieldset>
             <Button buttonText={'Создать'} />
-            {studentsStore.postError.status && (
+            {errorStatus && (
               <SC.ErrorMessage>
-                {studentsStore.postError.status} : {studentsStore.postError.statusText}
+                {errorStatus} : {errorMessage}
               </SC.ErrorMessage>
             )}
           </SC.Fieldset>
@@ -141,6 +143,6 @@ const RegistrationForm = observer(() => {
       </Container>
     </SC.Base>
   )
-})
+}
 
-export default RegistrationForm
+export default StudentForm

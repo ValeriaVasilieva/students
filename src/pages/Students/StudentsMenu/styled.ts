@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { H1, TextSmall } from '../../styled/Texts'
+import { H1, TextSmall } from '../../../components/styled/Texts'
 import loupe from '../../../assets/icons/loupe.svg'
 
 

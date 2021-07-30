@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import arrowLeft from '../../../assets/icons/arrow-left.svg'
-import { TextSmall } from '../../styled/Texts'
+import arrowLeft from '@assets/icons/arrow-left.svg'
+import { TextSmall } from '@components/styled/Texts'
 
 
 export const Base = styled.div`

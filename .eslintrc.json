@@ -83,7 +83,7 @@
             "group": "internal"
           },
           {
-            "pattern": "@constants/**",
+            "pattern": "@const/**",
             "group": "internal"
           },
           {

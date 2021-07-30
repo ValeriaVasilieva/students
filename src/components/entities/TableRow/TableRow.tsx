@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
+import { colors } from '@consts/colors'
 
-import { Student } from '../../../models/EntityModels/EntityModels'
-import { colorCircle } from '../../../consts/colors'
+import { Student } from '@models/Students/EntityModels/Students'
 
 import * as SC from './styled'
 
@@ -13,19 +13,6 @@ type Props = {
 
 const TableRow: FC<Props> = (props) => {
   const { student, onClickDeleteStudent } = props
-
-  const drawColorCell = (colorValue: string): JSX.Element => {
-    if (colorValue === 'lgbt') {
-      return (
-        <SC.Color>
-          {colorCircle.map(color => (
-            <SC.ColorBlock key={color} blockColor={color} />
-          ))}
-        </SC.Color>
-      )
-    }
-    return <SC.Color color={colorValue} />
-  }
 
   const drawAvatar = (avatar: string | null, name: string) => {
     if (!avatar) {
@@ -57,7 +44,11 @@ const TableRow: FC<Props> = (props) => {
         <SC.GridCell>{student.group}</SC.GridCell>
         <SC.GridCell>{student.age}</SC.GridCell>
         <SC.GridCell>{student.score}</SC.GridCell>
-        {drawColorCell(student.color)}
+        {colors.map((colorName) => {
+          if (colorName.value === student.color) {
+            return colorName.renderValue
+          }
+        })}
         <SC.VerticalLine />
         <SC.Button onClick={() => onClickDeleteStudent(student.id)} />
       </SC.GridRow>

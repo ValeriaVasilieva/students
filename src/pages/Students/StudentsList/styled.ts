@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { TextNormal } from '../../styled/Texts'
+import { TextNormal } from '@components/styled/Texts'
 
 
 export const Base = styled.div`
@@ -22,6 +22,7 @@ export const List = styled.div`
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   padding: 15px 20px;
+  margin-bottom: 20px;
 
   @media (max-width: 850px) {
     box-shadow: none;

@@ -1,10 +1,12 @@
 import { makeAutoObservable, runInAction } from 'mobx'
 
-import { Student, StudentsForm } from '../models/EntityModels/EntityModels'
-import { getStudents, postStudent, removeStudent } from '../api/students'
+import { StudentFormValues } from '@components/widgets/StudentForm/StudentForm'
+import { Student } from '@models/Students/EntityModels/Students'
+import { getStudents, postStudent, removeStudent } from '@api/students'
+import { StudentsRequest } from '@models/Students/ApiModels/StudentsRequest'
 
 
-type PostError = {
+type PostStudentError = {
   status: string
   statusText: string
 }
@@ -14,7 +16,7 @@ class StudentsStore {
   filteredStudents: Student[] = []
   sortValue = ''
   state = { render: true }
-  postError: PostError = {
+  postStudentError: PostStudentError = {
     status: '',
     statusText: ''
   }
@@ -53,41 +55,24 @@ class StudentsStore {
     }
   }
 
-  async postNewStudent(data: FormData) {
-    await postStudent(data)
+  getCorrectFormatAndPost = async (data: StudentFormValues) => {
+    const postData = {
+      specialty: data.prof,
+      rating: data.score,
+      birthday: data.birth,
+      ...data
+    }
+
+    await postStudent(postData)
       .then((resolve) => {
         if (resolve.status === 200) {
-          this.postError.status = ''
+          this.postStudentError.status = ''
         }
       })
       .catch((err) => {
-        this.postError.statusText = err.response.statusText
-        this.postError.status = err.response.status
+        this.postStudentError.statusText = err.response.data.errors[0].message
+        this.postStudentError.status = err.response.status
       })
-  }
-
-  getCorrectFormatAndPost = async (data: StudentsForm) => {
-    const entries = Object.entries(data).filter(entry => entry[0] !== 'avatar') as [string, string][]
-
-    const file = data.avatar[0]
-    const formData = new FormData()
-
-    formData.append('avatar', file)
-
-    entries.forEach((entry) => {
-      if (entry[0] === 'prof') {
-        formData.append('specialty', entry[1])
-      }
-      if (entry[0] === 'score') {
-        formData.append('rating', entry[1])
-      }
-      if (entry[0] === 'birth') {
-        formData.append('birthday', entry[1])
-      }
-      formData.append(...entry)
-    })
-
-    await this.postNewStudent(formData)
   }
 
   getFilterStudents(value: string) {

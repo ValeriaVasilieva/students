@@ -11,7 +11,7 @@ export const Base = styled.div`
   display: flex;
 `
 
-export const InputFile = styled.input.attrs({ type: 'file' })`
+export const InputFile = styled.input`
   display: none;
 `
 

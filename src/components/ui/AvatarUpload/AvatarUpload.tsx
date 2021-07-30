@@ -1,17 +1,16 @@
-import React, { forwardRef, useState } from 'react'
-import { UseFormRegister } from 'react-hook-form'
-
-import { StudentsForm } from '../../../models/EntityModels/EntityModels'
+import React, { forwardRef, useState, InputHTMLAttributes } from 'react'
+import { ChangeHandler } from 'react-hook-form'
 
 import * as SC from './styled'
 
 
 type Props = {
   label: string
-}
+  onChange: ChangeHandler
+} & InputHTMLAttributes<HTMLInputElement>
 
-const Avatar = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<StudentsForm>>>((props, ref) => {
-  const { onChange, onBlur, name, label } = props
+const AvatarUpload = forwardRef<HTMLInputElement, Props>((props, ref) => {
+  const { onChange, label, id, ...inputAttributes } = props
 
   const [avatarSrc, setAvatarSrc] = useState('')
 
@@ -39,24 +38,24 @@ const Avatar = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<S
         <SC.NameAvatar visible={avatarSrc}>ФИ</SC.NameAvatar>
         <SC.Avatar src={avatarSrc} visible={avatarSrc} />
       </SC.AvatarBox>
-      <SC.Label as={'label'} htmlFor="avatar">
+      <SC.Label as={'label'} htmlFor={id}>
         {label}
       </SC.Label>
       <SC.InputFile
+        id={id}
+        type="file"
         accept=".jpg, .jpeg, .gif, .png"
-        id="avatar"
         ref={ref}
         onChange={(e) => {
           onChange(e)
           handleChange(e)
         }}
-        name={name}
-        onBlur={onBlur}
+        {...inputAttributes}
       />
     </SC.Base>
   )
 })
 
-Avatar.displayName = 'Avatar'
+AvatarUpload.displayName = 'AvatarUpload'
 
-export default Avatar
+export default AvatarUpload

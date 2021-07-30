@@ -1,13 +1,14 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-import { TextSmall } from '../../styled/Texts'
-import arrow from '../../../assets/icons/select_arrow.svg'
-import check from '../../../assets/icons/check.svg'
+import { TextSmall } from '@components/styled/Texts'
+import arrow from '@assets/icons/select_arrow.svg'
+import check from '@assets/icons/check.svg'
 
 
 type Props = {
   isOpen?: boolean
   hasValue?: boolean
+  isFlex?: boolean
 }
 
 export const Base = styled.div`
@@ -61,32 +62,52 @@ export const Options = styled.div<Props>`
   cursor: pointer;
   z-index: 1;
   width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
   box-sizing: border-box;
   background: #ffffff;
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   padding: 16px 23px;
   border-radius: ${props => props.theme.borderRadius};
   box-shadow: ${props => props.theme.boxShadow};
   top: 100px;
 `
 
-export const Option = styled(TextSmall)`
+export const Option = styled(TextSmall)<Props>`
   line-height: 35px;
+  width: ${({ isFlex }) => (isFlex ? '30px' : 'inherit')};
   padding: 0 12px;
   border-radius: inherit;
   cursor: pointer;
   position: relative;
   outline: none;
+  transition: transform 0.2s;
 
-  &:focus {
-    background: rgba(73, 194, 232, 0.11);
-  }
+  ${({ isFlex }) =>
+    !isFlex &&
+    css`
+      &:focus,
+      &:hover {
+        background: rgba(73, 194, 232, 0.11);
+      }
 
-  &:focus::after {
-    content: url(${check});
-    position: absolute;
-    right: 12px;
-  }
+      &:focus::after,
+      &:hover::after {
+        content: url(${check});
+        position: absolute;
+        right: 12px;
+      }
+    `};
+
+  ${({ isFlex }) =>
+    isFlex &&
+    css`
+      padding: 0 2px;
+      &:focus,
+      &:hover {
+        transform: scale(1.2);
+      }
+    `};
 `
 
 export const Input = styled.input`

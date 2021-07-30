@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
-import { TextBig } from '../../styled/Texts'
-import logo from '../../../assets/icons/logo.svg'
+import { TextBig } from '@components/styled/Texts'
+import logo from '@assets/icons/logo.svg'
 
 
 type Props = {

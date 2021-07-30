@@ -1,9 +1,13 @@
-export type optionProps = {
+import React, { ReactElement } from 'react'
+
+
+export type OptionProps = {
   id: number
   value: string
+  renderValue?: ReactElement<'div'>
 }
 
-export type sortStudentsProps = {
+export type SortStudentsProps = {
   id: number
   value: string
   text: string
@@ -14,7 +18,7 @@ export const prof = [
   { id: 2, value: 'Банщик' },
   { id: 3, value: 'Мастер по маникюру' },
   { id: 4, value: 'Валеркин любимец' },
-  { id: 4, value: 'Боец UFC перед игрой в класк' }
+  { id: 5, value: 'Боец UFC перед игрой в класк' }
 ]
 
 export const sex = [

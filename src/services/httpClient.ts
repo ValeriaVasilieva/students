@@ -1,6 +1,5 @@
 import axios from 'axios'
-
-import config from '../consts/appConfig'
+import config from '@consts/appConfig'
 
 
 const authToken = config.localStorage.authToken

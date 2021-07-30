@@ -1,9 +1,8 @@
 import styled, { css } from 'styled-components'
 
-import { TextBold } from '../../styled/Texts'
-import basket from '../../../assets/icons/basket.svg'
-import { colors } from '../../../consts/colors'
-import blackStar from '../../../assets/icons/black_star.svg'
+import { TextBold } from '@components/styled/Texts'
+import blackStar from '@assets/icons/black_star.svg'
+import basket from '@assets/icons/basket.svg'
 
 
 type Props = {
@@ -164,14 +163,6 @@ export const AvatarWithoutPic = styled.div`
   }
 `
 
-export const Color = styled.div<Props>`
-  width: 30px;
-  height: 30px;
-  background: ${({ color }) => colors.find(currentColor => currentColor.color === color)?.value};
-  border-radius: 50%;
-  overflow: hidden;
-`
-
 export const Button = styled.button`
   background: url(${basket}) no-repeat center;
   width: 30px;
@@ -180,10 +171,4 @@ export const Button = styled.button`
   border: none;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-`
-
-export const ColorBlock = styled.div<Props>`
-  height: calc(100% / 6);
-  width: 100%;
-  background: ${({ blockColor }) => blockColor};
 `

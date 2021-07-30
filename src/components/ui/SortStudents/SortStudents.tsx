@@ -1,19 +1,18 @@
 import React, { FC, useState } from 'react'
-
-import { sortStudentsProps } from '../../../consts/optionsValues'
+import { SortStudentsProps } from '@consts/optionsValues'
 
 import * as SC from './styled'
 
 
 type Props = {
-  options: Array<sortStudentsProps>
+  sortOptions: Array<SortStudentsProps>
   placeholder: string
   onChangeSortList(value: string, text: string): void
   sortValue: string
 }
 
 const SortStudents: FC<Props> = (props) => {
-  const { options, placeholder, sortValue, onChangeSortList } = props
+  const { sortOptions, placeholder, sortValue, onChangeSortList } = props
 
   const [isOpened, setIsOpened] = useState<boolean>(false)
 
@@ -37,7 +36,7 @@ const SortStudents: FC<Props> = (props) => {
         {sortValue || placeholder}
       </SC.Select>
       <SC.Options isOpen={isOpened}>
-        {options.map(option => (
+        {sortOptions.map(option => (
           <SC.Option key={option.id} onClick={() => onChangeSortList(option.value, option.text)}>
             {option.text}
           </SC.Option>

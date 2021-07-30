@@ -1,37 +1,22 @@
-import React, { forwardRef } from 'react'
-import { UseFormRegister } from 'react-hook-form'
-
-import { StudentsForm } from '../../../models/EntityModels/EntityModels'
+import React, { forwardRef, InputHTMLAttributes } from 'react'
 
 import * as SC from './styled'
 
 
 type Props = {
   label: string
-  id: string
-  placeholder?: string
-  type?: string
   error?: string
-}
+} & InputHTMLAttributes<HTMLInputElement>
 
-const Input = forwardRef<HTMLInputElement, Props & ReturnType<UseFormRegister<StudentsForm>>>((props, ref) => {
-  const { label, id, placeholder, type, error, onChange, onBlur, name } = props
+const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
+  const { id, label, error, type = 'text', ...inputAttributes } = props
 
   return (
     <SC.Base>
       <SC.Label as={'label'} htmlFor={id}>
         {label}
       </SC.Label>
-      <SC.Input
-        ref={ref}
-        id={id}
-        as={'input'}
-        placeholder={placeholder}
-        type={type || 'text'}
-        onChange={onChange}
-        onBlur={onBlur}
-        name={name}
-      />
+      <SC.Input id={id} ref={ref} as={'input'} type={type} {...inputAttributes} />
       <SC.ErrorMessage as="span">{error}</SC.ErrorMessage>
     </SC.Base>
   )

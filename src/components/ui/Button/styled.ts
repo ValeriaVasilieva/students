@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { TextSmall } from '../../styled/Texts'
+import { TextSmall } from '@components/styled/Texts'
 
 
 type Props = {

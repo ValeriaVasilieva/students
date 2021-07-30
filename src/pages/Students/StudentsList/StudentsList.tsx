@@ -1,19 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 
-import { Container } from '../../styled/Container'
-import TableRow from '../../entities/TableRow'
-import studentsStore from '../../../store/Students'
+import { Container } from '@components/styled/Container'
+import TableRow from '@components/entities/TableRow'
+import studentsStore from '@stores/StudentsStore'
 
 import * as SC from './styled'
 
 
-const StudentsList = observer(() => {
+const StudentsList: FC = observer(() => {
   useEffect(() => {
     studentsStore.setStudents()
   }, [])
 
-  function renderList() {
+  const renderList = () => {
     if (studentsStore.filteredStudents.length === 0) {
       return <h1>Бесконечная пустота и одиночество</h1>
     } else {
