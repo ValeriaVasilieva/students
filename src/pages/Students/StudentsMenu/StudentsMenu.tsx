@@ -25,14 +25,13 @@ const StudentsMenu: FC = observer(() => (
       </SC.Flex>
       <SC.Flex>
         <SC.SearchBar
-          as={'input'}
           placeholder={'Поиск по имени'}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => studentsStore.getFilterStudents(e.currentTarget.value)}
+          onChange={e => studentsStore.FilterStudents(e.currentTarget.value)}
         />
         <SortStudents
           sortOptions={sortStudents}
           placeholder={'Фильтр'}
-          onChangeSortList={(value, text) => studentsStore.getSortedStudents(value, text)}
+          onChangeSortList={option => studentsStore.SortStudents(option)}
           sortValue={studentsStore.sortValue}
         />
       </SC.Flex>

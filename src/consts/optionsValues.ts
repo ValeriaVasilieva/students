@@ -7,11 +7,13 @@ export type OptionProps = {
   renderValue?: ReactElement<'div'>
 }
 
-export type SortStudentsProps = {
+export type SortStudentsOption<T extends string = string> = {
   id: number
-  value: string
+  sortType: T
   text: string
 }
+
+export type SortTypes = 'name' | 'ageDown' | 'ageUp' | 'scoreDown' | 'scoreUp'
 
 export const prof = [
   { id: 1, value: 'Информатика' },
@@ -34,10 +36,14 @@ export const group = [
   { id: 4, value: 'E-228' }
 ]
 
-export const sortStudents = [
-  { id: 1, value: 'name', text: 'К порядку' },
-  { id: 2, value: 'ageDown', text: 'Молодые' },
-  { id: 3, value: 'ageUp', text: 'Старые' },
-  { id: 4, value: 'scoreDown', text: 'Умные' },
-  { id: 5, value: 'scoreUp', text: 'Глупые' }
+export const sortStudents: SortStudentsOption<SortTypes>[] = [
+  { id: 1, sortType: 'name', text: 'К порядку' },
+  { id: 2, sortType: 'ageDown', text: 'Молодые' },
+  { id: 3, sortType: 'ageUp', text: 'Старые' },
+  { id: 4, sortType: 'scoreDown', text: 'Умные' },
+  { id: 5, sortType: 'scoreUp', text: 'Глупые' }
 ]
+
+// type test = {
+//   [key in SortTypes]: string
+// }

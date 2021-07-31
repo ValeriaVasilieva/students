@@ -6,7 +6,7 @@ import sortArrow from '../../../assets/icons/sort_arrow.svg'
 
 type Props = {
   isOpen?: boolean
-  colorValue?: string
+  isChanged?: boolean
 }
 
 export const Base = styled.div`
@@ -43,8 +43,8 @@ export const Select = styled(TextSmall).attrs({ color: 'placeholder' })<Props>`
     border: 2px solid ${props => props.theme.colors.primary};
   }
 
-  ${({ colorValue }) =>
-    colorValue &&
+  ${({ isChanged }) =>
+    isChanged &&
     css`
       color: ${props => props.theme.text.primary};
     `}

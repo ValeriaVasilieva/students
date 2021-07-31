@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-
-import { TextSmall } from '@components/styled/Texts'
+import { textSmall } from '@consts/mixins'
 
 
 type Props = {
@@ -12,9 +11,11 @@ export const Base = styled.div<Props>`
   width: ${({ width }) => width || '100%'};
 `
 
-export const Button = styled(TextSmall).attrs({
+export const Button = styled.button.attrs({
   color: 'secondary'
 })<Props>`
+  ${textSmall}
+  color: ${props => props.theme.text.secondary};
   width: 100%;
   height: 50px;
   border: none;

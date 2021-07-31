@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { textSmall } from '@consts/mixins'
 
 import { TextSmall } from '@components/styled/Texts'
 
@@ -9,7 +10,8 @@ export const Base = styled.div`
   width: 100%;
 `
 
-export const Label = styled(TextSmall)`
+export const Label = styled.label`
+  ${textSmall};
   margin: 10px 0 8px 0;
 
   &::after {
@@ -19,7 +21,8 @@ export const Label = styled(TextSmall)`
   }
 `
 
-export const Input = styled(TextSmall)`
+export const Input = styled.input`
+  ${textSmall};
   box-shadow: ${props => props.theme.boxShadow};
   border-radius: ${props => props.theme.borderRadius};
   border: none;

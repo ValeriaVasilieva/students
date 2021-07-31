@@ -10,7 +10,7 @@ import * as SC from './styled'
 
 const StudentsList: FC = observer(() => {
   useEffect(() => {
-    studentsStore.setStudents()
+    studentsStore.getStudents()
   }, [])
 
   const renderList = () => {
@@ -21,7 +21,7 @@ const StudentsList: FC = observer(() => {
         <TableRow
           student={student}
           key={student.id}
-          onClickDeleteStudent={e => studentsStore.deleteStudent(e)}
+          onClickDeleteStudent={e => studentsStore.removeStudent(e)}
         ></TableRow>
       ))
     }

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
+import { textSmall } from '@consts/mixins'
 
-import { H1, TextSmall } from '../../../components/styled/Texts'
+import { H1 } from '../../../components/styled/Texts'
 import loupe from '../../../assets/icons/loupe.svg'
 
 
@@ -28,7 +29,8 @@ export const ButtonBox = styled.div`
   }
 `
 
-export const SearchBar = styled(TextSmall)`
+export const SearchBar = styled.input`
+  ${textSmall};
   width: 100%;
   height: 48px;
   box-shadow: ${props => props.theme.boxShadow};

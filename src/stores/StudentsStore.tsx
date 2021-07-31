@@ -1,58 +1,70 @@
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable } from 'mobx'
+import { SortStudentsOption, SortTypes } from '@consts/optionsValues'
 
 import { StudentFormValues } from '@components/widgets/StudentForm/StudentForm'
 import { Student } from '@models/Students/EntityModels/Students'
-import { getStudents, postStudent, removeStudent } from '@api/students'
-import { StudentsRequest } from '@models/Students/ApiModels/StudentsRequest'
+import { getStudents as _getStudents, postStudent, removeStudent as _removeStudent } from '@api/students'
+
+import ApiRequestStore from './ApiRequestStore'
 
 
 type PostStudentError = {
-  status: string
+  status: number | undefined
   statusText: string
 }
 
 class StudentsStore {
-  defaultStudents: Student[] = []
+  rawStudents: Student[] = []
   filteredStudents: Student[] = []
-  sortValue = ''
+  sortValue: string | null = null
   state = { render: true }
   postStudentError: PostStudentError = {
-    status: '',
+    status: undefined,
     statusText: ''
   }
+  getStudentsRequest = new ApiRequestStore({
+    apiFunction: _getStudents
+  })
+  postStudentRequest = new ApiRequestStore({
+    apiFunction: postStudent,
+    excludedErrorCodes: [422]
+  })
+  removeStudentRequest = new ApiRequestStore({
+    apiFunction: _removeStudent
+  })
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  async setStudents() {
-    const newStudents = await getStudents()
+  async getStudents() {
+    await this.getStudentsRequest.send(undefined)
 
-    const studentsList = newStudents.data.students.map((student) => {
-      return {
-        id: student.id,
-        avatar: student.avatar,
-        name: student.name,
-        prof: student.specialty,
-        group: student.group,
-        age: `${new Date().getFullYear() - new Date(student.birthday).getFullYear()}`,
-        score: student.rating,
-        color: student.color
-      }
-    })
+    let studentsList: Student[] = []
 
-    this.defaultStudents = studentsList
+    if (this.getStudentsRequest.data) {
+      studentsList = this.getStudentsRequest.data.students.map((student) => {
+        return {
+          id: student.id,
+          avatar: student.avatar,
+          name: student.name,
+          prof: student.specialty,
+          group: student.group,
+          age: `${new Date().getFullYear() - new Date(student.birthday).getFullYear()}`,
+          score: student.rating,
+          color: student.color
+        }
+      })
+    }
+
+    this.rawStudents = studentsList
     this.filteredStudents = studentsList
   }
 
-  async deleteStudent(id: number) {
-    try {
-      await removeStudent(id)
+  async removeStudent(id: number) {
+    await this.getStudentsRequest.send(id)
 
-      runInAction(() => (this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)))
-    } catch (error) {
-      console.error(error)
-    }
+    this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)
   }
 
   getCorrectFormatAndPost = async (data: StudentFormValues) => {
@@ -63,38 +75,35 @@ class StudentsStore {
       ...data
     }
 
-    await postStudent(postData)
-      .then((resolve) => {
-        if (resolve.status === 200) {
-          this.postStudentError.status = ''
-        }
-      })
-      .catch((err) => {
-        this.postStudentError.statusText = err.response.data.errors[0].message
-        this.postStudentError.status = err.response.status
-      })
-  }
+    await this.postStudentRequest.send(postData)
 
-  getFilterStudents(value: string) {
-    this.filteredStudents = this.defaultStudents.filter(student => student.name.toLowerCase().includes(value || ''))
-  }
+    if (this.postStudentRequest.errors !== undefined) {
+      this.postStudentError.statusText = this.postStudentRequest.errors[0].message
+      this.postStudentError.status = this.postStudentRequest.status
 
-  getSortedStudents(value: string, text: string) {
-    this.sortValue = text
-
-    switch (value) {
-      case 'name':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => (a.name < b.name ? -1 : 1)))
-      case 'ageDown':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +a.age - +b.age))
-      case 'ageUp':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +b.age - +a.age))
-      case 'scoreDown':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +b.score - +a.score))
-      case 'scoreUp':
-        return (this.filteredStudents = this.filteredStudents.sort((a, b) => +a.score - +b.score))
+      return { status: this.postStudentError.status, isSuccess: false }
+    } else {
+      this.postStudentError.status = undefined
+      return { status: 200, isSuccess: true }
     }
   }
+
+  FilterStudents(value: string) {
+    this.filteredStudents = this.rawStudents.filter(student => student.name.toLowerCase().includes(value || ''))
+  }
+
+  SortStudents({ text, sortType }: SortStudentsOption<SortTypes>) {
+    this.sortValue = text
+    this.filteredStudents = this.filteredStudents.sort(sortFuncs[sortType])
+  }
+}
+
+const sortFuncs: { [SortType in SortTypes]: (a: Student, b: Student) => number } = {
+  name: (a, b) => (a.name < b.name ? -1 : 1),
+  ageDown: (a, b) => +a.age - +b.age,
+  ageUp: (a, b) => +a.age - +b.age,
+  scoreDown: (a, b) => +a.age - +b.age,
+  scoreUp: (a, b) => +a.age - +b.age
 }
 
 export default new StudentsStore()

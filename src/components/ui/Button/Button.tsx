@@ -13,7 +13,7 @@ interface ButtonProps {
 
 const Button: FC<ButtonProps> = ({ buttonText, icon, width }) => (
   <SC.Base width={width}>
-    <SC.Button as={'button'} icon={icon}>
+    <SC.Button icon={icon}>
       {icon && <PlusIcon className="icon" />}
       {buttonText}
     </SC.Button>

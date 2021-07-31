@@ -26,7 +26,7 @@ export type StudentFormValues = {
 
 type Props = {
   onSubmitForm(data: StudentFormValues): void
-  errorStatus: string
+  errorStatus: number | undefined
   errorMessage: string
 }
 
