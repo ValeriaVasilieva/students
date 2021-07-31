@@ -32,7 +32,7 @@ const SortStudents = <T extends string = string>(props: PropsWithChildren<Props<
 
   return (
     <SC.Base>
-      <SC.Select tabIndex={0} onClick={onClickOpen} colorValue={sortValue}>
+      <SC.Select tabIndex={0} onClick={onClickOpen} colorValue={sortValue }>
         {sortValue || placeholder}
       </SC.Select>
       <SC.Options isOpen={isOpened}>

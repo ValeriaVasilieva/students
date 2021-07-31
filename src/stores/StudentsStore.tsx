@@ -1,10 +1,9 @@
-import { makeAutoObservable, runInAction } from 'mobx'
 import { SortStudentsOption, SortTypes } from '@consts/optionsValues'
+import { makeAutoObservable } from 'mobx'
 
+import { getStudents, postStudent, removeStudent } from '@api/students'
 import { StudentFormValues } from '@components/widgets/StudentForm/StudentForm'
 import { Student } from '@models/Students/EntityModels/Students'
-import { getStudents, postStudent, removeStudent } from '@api/students'
-import { StudentsRequest } from '@models/Students/ApiModels/StudentsRequest'
 
 
 type PostStudentError = {
@@ -13,7 +12,9 @@ type PostStudentError = {
 }
 
 class StudentsStore {
+  //TODO нет смысла пользоваться полем внутри мобикса, у тебя же это константа
   defaultStudents: Student[] = []
+
   filteredStudents: Student[] = []
   sortValue = ''
   state = { render: true }
@@ -50,7 +51,7 @@ class StudentsStore {
     try {
       await removeStudent(id)
 
-      runInAction(() => (this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)))
+      this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)
     } catch (error) {
       console.error(error)
     }
@@ -64,16 +65,13 @@ class StudentsStore {
       ...data
     }
 
-    await postStudent(postData)
-      .then((resolve) => {
-        if (resolve.status === 200) {
-          this.postStudentError.status = ''
-        }
-      })
-      .catch((err) => {
-        this.postStudentError.statusText = err.response.data.errors[0].message
-        this.postStudentError.status = err.response.status
-      })
+    try {
+      const { status } = await postStudent(postData)
+      if (status === 200) this.postStudentError.status = ''
+    } catch (err) {
+      this.postStudentError.statusText = err.response.data.errors[0].message
+      this.postStudentError.status = err.response.status
+    }
   }
 
   getFilterStudents(value: string) {
