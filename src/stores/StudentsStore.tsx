@@ -62,7 +62,7 @@ class StudentsStore {
   }
 
   async removeStudent(id: number) {
-    await this.getStudentsRequest.send(id)
+    await this.removeStudentRequest.send(id)
 
     this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)
   }
