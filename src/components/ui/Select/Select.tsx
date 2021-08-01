@@ -1,14 +1,14 @@
-import React, { forwardRef, useEffect, useState, useRef, InputHTMLAttributes, ReactElement } from 'react'
+import React, { forwardRef, useEffect, useState, useRef, InputHTMLAttributes } from 'react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import { OptionProps } from '@consts/optionsValues'
+import { Option } from '@consts/optionsValues'
 
 import * as SC from './styled'
 
 
 type Props = {
   label: string
-  options: OptionProps[]
-  onSelected(valueSelect: string): void
+  options: Option[]
+  onSelected(valueSelect: string | null): void
   error?: string
 } & InputHTMLAttributes<HTMLInputElement>
 
@@ -16,8 +16,7 @@ const Select = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const { label, options, placeholder, onSelected, error } = props
 
   const [isOpened, setIsOpened] = useState<boolean>(false)
-  const [selectedValue, setSelectedValue] = useState<string>('')
-  const [jsxElement, setJsxElement] = useState<ReactElement<'div'> | string>('')
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null)
 
   const counter = useRef(0 as number)
 
@@ -28,9 +27,8 @@ const Select = forwardRef<HTMLInputElement, Props>((props, ref) => {
     setIsOpened(!isOpened)
   }
 
-  const getSelectedValue = (value: string, jsx: ReactElement<'div'> | string = '') => {
-    setJsxElement(jsx)
-    setSelectedValue(value)
+  const getSelectedValue = (option: Option) => {
+    setSelectedOption(option)
     setIsOpened(false)
   }
 
@@ -72,7 +70,8 @@ const Select = forwardRef<HTMLInputElement, Props>((props, ref) => {
             counter.current = 0
           }
           const elRight = optionsRefs.current[counter.current + 1]
-          setSelectedValue(elRight.dataset.value || '')
+          const option = options.find(option => option.value === elRight.dataset.value)
+          setSelectedOption(option || null)
           ++counter.current
         }
         break
@@ -82,7 +81,8 @@ const Select = forwardRef<HTMLInputElement, Props>((props, ref) => {
             counter.current = options.length + 1
           }
           const elLeft = optionsRefs.current[counter.current - 1]
-          setSelectedValue(elLeft.dataset.value || '')
+          const option = options.find(option => option.value === elLeft.dataset.value)
+          setSelectedOption(option || null)
           --counter.current
         }
         break
@@ -90,27 +90,22 @@ const Select = forwardRef<HTMLInputElement, Props>((props, ref) => {
     onKeyDownSelectAndOptionHandler(e, 0)
   }
 
-  const onKeyDownOptionHandler = (
-    e: React.KeyboardEvent<HTMLDivElement>,
-    value: string,
-    id: number,
-    jsx: ReactElement<'div'> | string = ''
-  ) => {
+  const onKeyDownOptionHandler = (e: React.KeyboardEvent<HTMLDivElement>, option: Option) => {
     switch (e.code) {
       case 'Enter':
         {
-          getSelectedValue(value, jsx)
+          getSelectedValue(option)
         }
         break
     }
-    onKeyDownSelectAndOptionHandler(e, id)
+    onKeyDownSelectAndOptionHandler(e, option.id)
   }
 
   useEffect(() => {
-    if (selectedValue !== '') {
-      onSelected(selectedValue)
+    if (selectedOption !== null) {
+      onSelected(selectedOption.value)
     }
-  }, [selectedValue])
+  }, [selectedOption])
 
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
@@ -119,12 +114,13 @@ const Select = forwardRef<HTMLInputElement, Props>((props, ref) => {
         <SC.Select
           tabIndex={0}
           onClick={onClickOpen}
-          hasValue={!!selectedValue}
+          hasValue={selectedOption !== null}
+          onBlur={() => onSelected(selectedOption?.value || null)}
           onKeyDown={(e) => {
             onKeyDownSelectHandler(e)
           }}
         >
-          {jsxElement || selectedValue || placeholder}
+          {selectedOption?.renderValue || selectedOption?.value || placeholder}
         </SC.Select>
         <SC.Options isOpen={isOpened}>
           {options.map((option, index) => {
@@ -133,9 +129,9 @@ const Select = forwardRef<HTMLInputElement, Props>((props, ref) => {
                 tabIndex={-1}
                 key={index}
                 data-value={option.value}
-                onClick={() => getSelectedValue(option.value, option.renderValue)}
+                onClick={() => getSelectedValue(option)}
                 onKeyDown={(e) => {
-                  onKeyDownOptionHandler(e, option.value, option.id, option.renderValue)
+                  onKeyDownOptionHandler(e, option)
                 }}
                 ref={el => (optionsRefs.current[option.id] = el)}
                 isFlex={!!option.renderValue}

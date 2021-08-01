@@ -1,12 +1,11 @@
-import React, { forwardRef, useState, InputHTMLAttributes } from 'react'
-import { ChangeHandler } from 'react-hook-form'
+import React, { forwardRef, useState, InputHTMLAttributes, ChangeEventHandler } from 'react'
 
 import * as SC from './styled'
 
 
 type Props = {
   label: string
-  onChange: ChangeHandler
+  onChange: ChangeEventHandler
 } & InputHTMLAttributes<HTMLInputElement>
 
 const AvatarUpload = forwardRef<HTMLInputElement, Props>((props, ref) => {

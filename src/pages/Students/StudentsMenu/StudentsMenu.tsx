@@ -26,12 +26,12 @@ const StudentsMenu: FC = observer(() => (
       <SC.Flex>
         <SC.SearchBar
           placeholder={'Поиск по имени'}
-          onChange={e => studentsStore.FilterStudents(e.currentTarget.value)}
+          onChange={e => studentsStore.filterStudents(e.currentTarget.value)}
         />
         <SortStudents
           sortOptions={sortStudents}
           placeholder={'Фильтр'}
-          onChangeSortList={option => studentsStore.SortStudents(option)}
+          onChangeSortList={option => studentsStore.sortStudents(option)}
           sortValue={studentsStore.sortValue}
         />
       </SC.Flex>

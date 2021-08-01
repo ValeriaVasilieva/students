@@ -8,7 +8,7 @@ import * as SC from './styled'
 
 type Props = {
   student: Student
-  onClickDeleteStudent(id: number): void
+  onClickDeleteStudent(student: Student): void
 }
 
 const TableRow: FC<Props> = (props) => {
@@ -50,7 +50,7 @@ const TableRow: FC<Props> = (props) => {
           }
         })}
         <SC.VerticalLine />
-        <SC.Button onClick={() => onClickDeleteStudent(student.id)} />
+        <SC.Button onClick={() => onClickDeleteStudent(student)} />
       </SC.GridRow>
     </SC.Base>
   )

@@ -1,4 +1,6 @@
 import React, { FC } from 'react'
+import { Link } from 'react-router-dom'
+import { PATH_STUDENTS } from '@consts/routes'
 
 import { Container } from '@components/styled/Container'
 
@@ -9,7 +11,9 @@ const Header: FC = () => (
   <SC.Base>
     <Container>
       <SC.Content>
-        <SC.LogoDoubletapp />
+        <Link to={PATH_STUDENTS}>
+          <SC.LogoDoubletapp />
+        </Link>
         <SC.TextContent>
           <SC.AuthorSign as={'p'}>Students&ensp;</SC.AuthorSign>
           <SC.AuthorSignPretext as={'p'}>by&ensp;</SC.AuthorSignPretext>

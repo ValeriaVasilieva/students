@@ -7,15 +7,12 @@ import { http } from '@services/httpClient'
 
 export const getStudents = () => http.get<StudentsResponse>('/api/students')
 
-export const removeStudent = (student_id: number) => http.delete<string>(`/api/students/${student_id}`)
+export const removeStudent = (studentId: number) => http.delete<string>(`/api/students/${studentId}`)
 
 export const postStudent = (data: StudentsRequest): Promise<AxiosResponse<string>> => {
-  const entries = Object.entries(data).filter(entry => entry[0] !== 'avatar') as [string, string][]
+  const entries = Object.entries(data)
 
-  const file = data.avatar[0]
   const formData = new FormData()
-
-  formData.append('avatar', file)
 
   entries.forEach((entry) => {
     formData.append(...entry)

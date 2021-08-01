@@ -7,5 +7,5 @@ export type StudentsRequest = {
   color: string
   rating: string
   birthday: string
-  avatar: FileList
+  avatar: File
 }

@@ -14,7 +14,7 @@ const Input = forwardRef<HTMLInputElement, Props>((props, ref) => {
   return (
     <SC.Base>
       <SC.Label htmlFor={id}>{label}</SC.Label>
-      <SC.Input id={id} ref={ref} as={'input'} type={type} {...inputAttributes} />
+      <SC.Input id={id} ref={ref} type={type} {...inputAttributes} />
       <SC.ErrorMessage as="span">{error}</SC.ErrorMessage>
     </SC.Base>
   )

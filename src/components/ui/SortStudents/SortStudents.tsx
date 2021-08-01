@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, useState } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
 import { SortStudentsOption } from '@consts/optionsValues'
 
 import * as SC from './styled'
@@ -32,7 +32,7 @@ const SortStudents = <T extends string = string>(props: PropsWithChildren<Props<
 
   return (
     <SC.Base>
-      <SC.Select tabIndex={0} onClick={onClickOpen} isChanged={sortValue === null}>
+      <SC.Select tabIndex={0} onClick={onClickOpen} isChanged={sortValue !== null}>
         {sortValue || placeholder}
       </SC.Select>
       <SC.Options isOpen={isOpened}>

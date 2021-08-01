@@ -102,7 +102,7 @@ const StudentForm: FC<Props> = ({ onSubmitForm, errorStatus, errorMessage }) => 
               label={'Пол'}
               placeholder={'Выбрать'}
               options={OP.sex}
-              onSelected={(valueSelect: string) => setValue('sex', valueSelect)}
+              onSelected={(valueSelect: string) => setValue('sex', valueSelect, { shouldValidate: true })}
               {...register('sex', { required: 'Your choice is very important for us' })}
               error={errors.sex?.message}
             />
@@ -110,7 +110,7 @@ const StudentForm: FC<Props> = ({ onSubmitForm, errorStatus, errorMessage }) => 
               label={'Специальность'}
               placeholder={'Выбрать'}
               options={OP.prof}
-              onSelected={(valueSelect: string) => setValue('prof', valueSelect)}
+              onSelected={(valueSelect: string) => setValue('prof', valueSelect, { shouldValidate: true })}
               {...register('prof', { required: 'Your choice is very important for us' })}
               error={errors.prof?.message}
             />
@@ -118,7 +118,7 @@ const StudentForm: FC<Props> = ({ onSubmitForm, errorStatus, errorMessage }) => 
               label={'Группа'}
               placeholder={'Выбрать'}
               options={OP.group}
-              onSelected={(valueSelect: string) => setValue('group', valueSelect)}
+              onSelected={(valueSelect: string) => setValue('group', valueSelect, { shouldValidate: true })}
               {...register('group', { required: 'Your choice is very important for us' })}
               error={errors.group?.message}
             />
@@ -126,7 +126,7 @@ const StudentForm: FC<Props> = ({ onSubmitForm, errorStatus, errorMessage }) => 
               label={'Любимый цвет'}
               placeholder={'Выбрать'}
               options={colors}
-              onSelected={(valueSelect: string) => setValue('color', valueSelect)}
+              onSelected={(valueSelect: string) => setValue('color', valueSelect, { shouldValidate: true })}
               {...register('color', { required: 'Your choice is very important for us' })}
               error={errors.color?.message}
             />

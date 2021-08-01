@@ -4,7 +4,6 @@ import { textSmall } from '@consts/mixins'
 
 type Props = {
   width?: string
-  icon?: true
 }
 
 export const Base = styled.div<Props>`
@@ -13,7 +12,7 @@ export const Base = styled.div<Props>`
 
 export const Button = styled.button.attrs({
   color: 'secondary'
-})<Props>`
+})`
   ${textSmall}
   color: ${props => props.theme.text.secondary};
   width: 100%;

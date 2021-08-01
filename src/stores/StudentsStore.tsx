@@ -4,6 +4,7 @@ import { SortStudentsOption, SortTypes } from '@consts/optionsValues'
 import { StudentFormValues } from '@components/widgets/StudentForm/StudentForm'
 import { Student } from '@models/Students/EntityModels/Students'
 import { getStudents as _getStudents, postStudent, removeStudent as _removeStudent } from '@api/students'
+import { StudentsRequest } from '@models/Students/ApiModels/StudentsRequest'
 
 import ApiRequestStore from './ApiRequestStore'
 
@@ -61,23 +62,30 @@ class StudentsStore {
     this.filteredStudents = studentsList
   }
 
-  async removeStudent(id: number) {
+  async removeStudent({ id }: Student) {
     await this.removeStudentRequest.send(id)
 
     this.filteredStudents = this.filteredStudents.filter(student => student.id !== id)
   }
 
   getCorrectFormatAndPost = async (data: StudentFormValues) => {
-    const postData = {
+    const postData: StudentsRequest = {
       specialty: data.prof,
       rating: data.score,
       birthday: data.birth,
-      ...data
+      avatar: data.avatar[0],
+      email: data.email,
+      name: data.name,
+      color: data.color,
+      sex: data.sex,
+      group: data.group
     }
+
+    this.postStudentRequest.errors = []
 
     await this.postStudentRequest.send(postData)
 
-    if (this.postStudentRequest.errors !== undefined) {
+    if (this.postStudentRequest.errors.length) {
       this.postStudentError.statusText = this.postStudentRequest.errors[0].message
       this.postStudentError.status = this.postStudentRequest.status
 
@@ -88,11 +96,11 @@ class StudentsStore {
     }
   }
 
-  FilterStudents(value: string) {
+  filterStudents(value: string) {
     this.filteredStudents = this.rawStudents.filter(student => student.name.toLowerCase().includes(value || ''))
   }
 
-  SortStudents({ text, sortType }: SortStudentsOption<SortTypes>) {
+  sortStudents({ text, sortType }: SortStudentsOption<SortTypes>) {
     this.sortValue = text
     this.filteredStudents = this.filteredStudents.sort(sortFuncs[sortType])
   }
@@ -101,9 +109,9 @@ class StudentsStore {
 const sortFuncs: { [SortType in SortTypes]: (a: Student, b: Student) => number } = {
   name: (a, b) => (a.name < b.name ? -1 : 1),
   ageDown: (a, b) => +a.age - +b.age,
-  ageUp: (a, b) => +a.age - +b.age,
-  scoreDown: (a, b) => +a.age - +b.age,
-  scoreUp: (a, b) => +a.age - +b.age
+  ageUp: (a, b) => +b.age - +a.age,
+  scoreDown: (a, b) => +b.score - +a.score,
+  scoreUp: (a, b) => +a.score - +b.score
 }
 
 export default new StudentsStore()
